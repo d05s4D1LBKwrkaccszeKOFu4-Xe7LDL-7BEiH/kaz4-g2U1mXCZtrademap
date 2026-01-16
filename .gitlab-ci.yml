@@ -1,0 +1,34 @@
+include:
+  - project: 'libraries/ci-cd-templates'
+    ref: main
+    file:
+      - '.build.yml'
+      - '.deploy.yml'
+
+stages:
+  - build
+  - deploy_dev
+
+.vars:
+  variables:
+    SERVICE_NAME: trademap
+    CONTAINER_IMAGE: registry.khc.kz/bus/$SERVICE_NAME
+    DEV_NAMESPACE: dev-bus
+
+trademap-build:
+  extends:
+    - .vars
+    - .build
+  only:
+    refs:
+      - main
+
+trademap-deploy-dev:
+  needs:
+    - trademap-build
+  extends:
+    - .vars
+    - .deploy_dev
+  only:
+    refs:
+      - main
