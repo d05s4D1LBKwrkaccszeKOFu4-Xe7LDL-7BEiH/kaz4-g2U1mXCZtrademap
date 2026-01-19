@@ -2,18 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<<<<<<< HEAD
 <title>Карта Казахстана</title>
-=======
-<title>Комплексная Карта Казахстана</title>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-<<<<<<< HEAD
     /* ОСНОВНЫЕ СТИЛИ */
     html,body{margin:0;padding:0;height:100%;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;overflow:hidden; font-size: 13px;}
     #map{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;background:#f8fbff}
@@ -80,88 +75,6 @@
     .btn-map { background: #1976D2; color: white; }
     .btn-map:hover { background: #1565c0; }
     
-=======
-    /* --- ОСНОВНЫЕ СТИЛИ --- */
-    html,body{margin:0;padding:0;height:100%;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;overflow:hidden; font-size: 13px;}
-    #map{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;background:#f8fbff}
-    
-    /* --- ПЕРЕКЛЮЧАТЕЛЬ УРОВНЕЙ --- */
-    .admin-switch-container {
-        position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
-        z-index: 1000; background: white; padding: 4px;
-        border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        display: flex; gap: 4px;
-    }
-    .level-btn {
-        width: 36px; height: 36px; border: none; background: transparent;
-        border-radius: 50%; cursor: pointer; color: #555; font-size: 14px;
-        display: flex; align-items: center; justify-content: center;
-        transition: all 0.2s; position: relative;
-    }
-    .level-btn:hover { background: #f0f0f0; color: #333; }
-    .level-btn.active { background: #1976D2; color: white; box-shadow: 0 2px 6px rgba(25, 118, 210, 0.4); }
-    .level-btn:hover::after {
-        content: attr(title); position: absolute; top: 110%; left: 50%; transform: translateX(-50%);
-        background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px;
-        font-size: 11px; white-space: nowrap; pointer-events: none;
-    }
-
-    /* --- ЛЕВАЯ ПАНЕЛЬ --- */
-    .sidebar {
-        position: absolute; top: 15px; left: 15px; width: 280px;
-        background: rgba(255,255,255,0.96); border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        z-index: 1000; max-height: calc(100vh - 100px); overflow-y: auto; display: flex; flex-direction: column;
-    }
-    .sidebar-header { padding: 12px 15px; background: #2c3e50; color: white; font-weight: 600; font-size: 14px; border-radius: 8px 8px 0 0; }
-    
-    .accordion-item { border-bottom: 1px solid #eee; }
-    .accordion-header {
-        width: 100%; padding: 10px 15px; background: white; border: none;
-        text-align: left; cursor: pointer; font-size: 12px; font-weight: 600; color: #444;
-        display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;
-    }
-    .accordion-header:hover { background: #f7f9fc; color: #1976D2; }
-    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #f8fbff; }
-    .accordion-item.active .accordion-content { max-height: 500px; overflow-y: auto; }
-
-    .layer-btn {
-        display: block; width: 100%; padding: 8px 15px 8px 45px; border: none; background: transparent;
-        text-align: left; cursor: pointer; font-size: 11.5px; color: #555; transition: 0.2s; border-left: 3px solid transparent;
-    }
-    .layer-btn:hover { background: #e3f2fd; color: #1565c0; }
-    .layer-btn.active { background: #e3f2fd; color: #1976D2; border-left-color: #1976D2; font-weight: 700; }
-    .layer-toggle { padding: 8px 15px 8px 45px; display: flex; align-items: center; gap: 8px; font-size: 11.5px; cursor: pointer; color: #555; }
-
-    /* --- ПРАВАЯ ПАНЕЛЬ СТАТИСТИКИ --- */
-    #stats-panel {
-        position: absolute; top: 60px; right: 15px; width: 340px;
-        background: rgba(255, 255, 255, 0.96); padding: 12px;
-        border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        z-index: 1000; display: flex; flex-direction: column; transition: all 0.3s ease;
-    }
-    #stats-panel.expanded { width: 80%; height: 80%; top: 10%; right: 10%; padding: 30px; z-index: 2000; }
-    #stats-panel.expanded .chart-container { height: 100% !important; flex-grow: 1; }
-    
-    .panel-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 8px; }
-    #region-title { margin: 0; color: #2c3e50; font-size: 13px; font-weight: bold; }
-    .expand-btn { background: none; border: none; cursor: pointer; color: #555; font-size: 14px; }
-    .expand-btn:hover { color: #1976D2; }
-
-    .chart-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; }
-    .chart-selector button {
-        border: 1px solid #ddd; background: #f8f9fa; padding: 4px;
-        font-size: 10px; font-weight: 600; color: #555; cursor: pointer; border-radius: 4px;
-    }
-    .chart-selector button.active { background: #3498db; color: white; border-color: #2980b9; }
-
-    .chart-container { position: relative; height: 160px; width: 100%; transition: height 0.3s; }
-    .stat-link-btn { display: block; margin-top: 8px; padding: 6px; background: #2c3e50; color: white; text-align: center; text-decoration: none; border-radius: 4px; font-size: 11px; font-weight: bold; }
-    
-    /* ССЫЛКИ СПРАВА */
-    .top-right-controls { position: absolute; top: 15px; right: 15px; z-index: 1001; display: flex; gap: 8px; }
-    .akmola-link { display:flex;align-items:center; gap:6px; color:#1976D2; text-decoration:none; font-size:11px; padding:5px 10px; background:white; border-radius:15px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer;}
-
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     /* ЛЕГЕНДА */
     .legend { position:absolute; bottom:25px; right:15px; background:white; padding:10px; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,.15); font-size:11px; z-index:999; }
     .legend-title { margin-bottom:5px; font-weight:bold; }
@@ -169,7 +82,6 @@
     .legend-color { width:18px; height:12px; border:1px solid #ccc; }
 
     /* ПОПАПЫ */
-<<<<<<< HEAD
     .leaflet-popup-content-wrapper { border-radius: 8px; overflow: hidden; padding: 0; }
     .leaflet-popup-content { margin: 0; width: 100% !important; min-width: 380px; }
     .popup-header { background:#1976D2; color:white; padding:10px 15px; font-weight:bold; font-size:14px; }
@@ -195,18 +107,6 @@
     .markup-red { color: #c62828; } 
     .markup-yellow { color: #f9a825; }
 
-=======
-    .popup-header { background:#1976D2; color:white; padding:8px 12px; font-weight:bold; font-size:13px; }
-    .popup-body { padding: 0; font-size: 11px; max-height: 250px; overflow-y: auto; }
-    .popup-row { display:flex; justify-content:space-between; padding: 4px 10px; border-bottom:1px solid #f0f0f0; }
-    .popup-value { font-weight:700; color:#1976D2; }
-    .balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; }
-    .balance-flow-item { margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px solid #eee; }
-    .balance-markup { display: block; font-weight: bold; font-size: 10px; }
-    .markup-green { color: #2e7d32; } .markup-red { color: #c62828; } .markup-yellow { color: #f9a825; }
-
-    /* Лоадер */
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     #mapTransitionLoader { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9); display:none;align-items:center;justify-content:center;z-index:9999;flex-direction:column; }
 </style>
 </head>
@@ -215,37 +115,16 @@
 <div id="map"></div>
 
 <div class="admin-switch-container">
-<<<<<<< HEAD
     <button class="level-btn active" id="btn-lvl-obl" onclick="manualSwitchLevel('obl')" title="Областной уровень"><i class="fa-solid fa-map"></i></button>
     <button class="level-btn" id="btn-lvl-dist" onclick="manualSwitchLevel('dist')" title="Районный уровень"><i class="fa-solid fa-location-dot"></i></button>
     <button class="level-btn" id="btn-lvl-okrug" onclick="manualSwitchLevel('okrug')" title="Сельские округа"><i class="fa-solid fa-leaf"></i></button>
     <button class="level-btn" id="btn-lvl-town" onclick="manualSwitchLevel('town')" title="Населенные пункты"><i class="fa-solid fa-city"></i></button>
-=======
-    <button class="level-btn active" id="btn-lvl-obl" onclick="manualSwitchLevel('obl')" title="Областной уровень">
-        <i class="fa-solid fa-map"></i>
-    </button>
-    <button class="level-btn" id="btn-lvl-dist" onclick="manualSwitchLevel('dist')" title="Районный уровень">
-        <i class="fa-solid fa-location-dot"></i>
-    </button>
-    <button class="level-btn" id="btn-lvl-okrug" onclick="manualSwitchLevel('okrug')" title="Сельские округа">
-        <i class="fa-solid fa-leaf"></i>
-    </button>
-    <button class="level-btn" id="btn-lvl-town" onclick="manualSwitchLevel('town')" title="Населенные пункты">
-        <i class="fa-solid fa-city"></i>
-    </button>
-</div>
-
-<div class="top-right-controls">
-    <a href="https://d05s4D1LBKwrkaccszeKOFu4-Xe7LDL-7BEiH.github.io/akmtrademapVa0HP07Ko/" class="akmola-link" data-loader-img="gluster_2020.png">Акмолинская обл.</a>
-    <a href="https://d05s4D1LBKwrkaccszeKOFu4-Xe7LDL-7BEiH.github.io/jMs7k0stanaykQeCY2bE8/" class="akmola-link" data-loader-img="kostanay_logo.png">г. Костанай</a>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 </div>
 
 <div class="sidebar">
     <div class="sidebar-header">Слои карты</div>
     
     <div class="accordion-item">
-<<<<<<< HEAD
         <button class="accordion-header" onclick="toggleAccordion(this)"><span><i class="fa-solid fa-users"></i> Население</span></button>
         <div class="accordion-content">
             <button class="layer-btn" data-metric="population" onclick="setLayer('population', this)">Численность населения</button>
@@ -263,29 +142,10 @@
             <button class="layer-btn active" data-metric="retail" onclick="setLayer('retail', this)">Розничная торговля</button>
             <button class="layer-btn" data-metric="wholesale" onclick="setLayer('wholesale', this)">Оптовая торговля</button>
             <button class="layer-btn" data-metric="vvp" onclick="setLayer('vvp', this)">ВРП</button>
-=======
-        <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span><i class="fa-solid fa-scale-balanced"></i> Политико-правовой</span>
-        </button>
-        <div class="accordion-content">
-             <button class="layer-btn" disabled>Границы округов (нет данных)</button>
-        </div>
-    </div>
-
-    <div class="accordion-item active">
-        <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span><i class="fa-solid fa-coins"></i> Финансово-экономический</span>
-        </button>
-        <div class="accordion-content">
-            <button class="layer-btn active" data-metric="retail" onclick="setLayer('retail', this)">Розничная торговля</button>
-            <button class="layer-btn" data-metric="wholesale" onclick="setLayer('wholesale', this)">Оптовая торговля</button>
-            <button class="layer-btn" data-metric="vvp" onclick="setLayer('vvp', this)">ВРП (Раскраска)</button>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
         </div>
     </div>
 
     <div class="accordion-item">
-<<<<<<< HEAD
         <button class="accordion-header" onclick="toggleAccordion(this)"><span><i class="fa-solid fa-city"></i> Инфраструктурный</span></button>
         <div class="accordion-content"><button class="layer-btn" disabled>Данные отсутствуют</button></div>
     </div>
@@ -295,64 +155,29 @@
         <div class="accordion-content">
             <button class="layer-btn" data-metric="balance" onclick="setLayer('balance', this)">Продовольственный баланс</button>
             <label class="layer-toggle"><input type="checkbox" id="fairsToggle"> Ярмарки</label>
-=======
-        <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span><i class="fa-solid fa-city"></i> Инфраструктурный</span>
-        </button>
-        <div class="accordion-content">
-            <label class="layer-toggle"><input type="checkbox" id="fairsToggle"> Ярмарки</label>
-        </div>
-    </div>
-
-    <div class="accordion-item">
-        <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span><i class="fa-solid fa-wheat-awn"></i> Агропромышленный</span>
-        </button>
-        <div class="accordion-content">
-            <button class="layer-btn" data-metric="balance" onclick="setLayer('balance', this)">Продовольственный баланс</button>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
             <label class="layer-toggle"><input type="checkbox" id="storageToggle"> Овощехранилища</label>
         </div>
     </div>
 
     <div class="accordion-item">
-<<<<<<< HEAD
         <button class="accordion-header" onclick="toggleAccordion(this)"><span><i class="fa-solid fa-hand-holding-heart"></i> Социальный блок</span></button>
         <div class="accordion-content">
             <button class="layer-btn" data-metric="queue" onclick="setLayer('queue', this)">Очередники МИО</button>
             <button class="layer-btn" data-metric="susn" onclick="setLayer('susn', this)">Социально уязвимые слои</button>
-=======
-        <button class="accordion-header" onclick="toggleAccordion(this)">
-            <span><i class="fa-solid fa-users"></i> Социальный блок</span>
-        </button>
-        <div class="accordion-content">
-            <button class="layer-btn" data-metric="population" onclick="setLayer('population', this)">Численность населения</button>
-            <button class="layer-btn" data-metric="queue" onclick="setLayer('queue', this)">Очередники МИО</button>
-            <button class="layer-btn" data-metric="susn" onclick="setLayer('susn', this)">СУСН</button>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
         </div>
     </div>
     
     <div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)"><span><i class="fa-solid fa-microchip"></i> Технологический</span></button><div class="accordion-content"><button class="layer-btn" disabled>Нет данных</button></div></div>
-<<<<<<< HEAD
-=======
-    <div class="accordion-item"><button class="accordion-header" onclick="toggleAccordion(this)"><span><i class="fa-solid fa-masks-theater"></i> Культурный</span></button><div class="accordion-content"><button class="layer-btn" disabled>Нет данных</button></div></div>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 </div>
 
 <div id="stats-panel">
     <div class="panel-header-row">
         <h4 id="region-title">РЕСПУБЛИКА КАЗАХСТАН</h4>
-<<<<<<< HEAD
         <button class="expand-btn" onclick="toggleDashboard()" title="Развернуть"><i class="fa-solid fa-expand"></i></button>
-=======
-        <button class="expand-btn" onclick="toggleDashboard()" title="Развернуть/Свернуть"><i class="fa-solid fa-expand"></i></button>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     </div>
     <div class="chart-selector">
         <button id="btn-pop" class="active" onclick="switchChartMode('pop', this)">Население</button>
         <button id="btn-vvp" onclick="switchChartMode('vvp', this)">ВРП</button>
-<<<<<<< HEAD
         <button id="btn-cpi" onclick="switchChartMode('cpi', this)">Расходы домох-в</button>
         <button id="btn-crime" onclick="switchChartMode('crime', this)">Преступность</button>
     </div>
@@ -366,29 +191,12 @@
 
 <div class="legend" id="legend"></div>
 <div id="mapTransitionLoader"><img src="https://i.gifer.com/ZZ5H.gif" alt="Loading" style="width:50px;"><p>Загрузка...</p></div>
-=======
-        <button id="btn-cpi" onclick="switchChartMode('cpi', this)">Инфляция</button>
-        <button id="btn-crime" onclick="switchChartMode('crime', this)">Преступность</button>
-    </div>
-    <div class="chart-container">
-        <canvas id="mainChart"></canvas>
-    </div>
-    <a href="#" id="stat-link" class="stat-link-btn" target="_blank">Подробнее</a>
-</div>
-
-<div class="legend" id="legend"></div>
-<div id="mapTransitionLoader">
-    <img id="loaderImage" src="" alt="Loading" style="width:100px;">
-    <p style="margin-top:10px;font-size:16px;">Загрузка...</p>
-</div>
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
 // --- КОНФИГУРАЦИЯ ---
 const regionLinks = {
-<<<<<<< HEAD
     "г. Астана": "https://stat.gov.kz/ru/region/astana/", "г. Алматы": "https://stat.gov.kz/ru/region/almaty/", "г. Шымкент": "https://stat.gov.kz/ru/region/shymkent/",
     "Абайская область": "https://stat.gov.kz/ru/region/abay/", "Акмолинская область": "https://stat.gov.kz/ru/region/akmola/", "Актюбинская область": "https://stat.gov.kz/ru/region/aktobe/",
     "Алматинская область": "https://stat.gov.kz/ru/region/almaty-obl/", "Атырауская область": "https://stat.gov.kz/ru/region/atyrau/", "Восточно-Казахстанская область": "https://stat.gov.kz/ru/region/vko/",
@@ -481,76 +289,28 @@ document.addEventListener('DOMContentLoaded', function() {
     updateMapState();
     setLayer('population', populationBtn);
 });
-=======
-    "Г. Астана": "https://stat.gov.kz/ru/region/astana/", "Г. Алматы": "https://stat.gov.kz/ru/region/almaty/", "Г. Шымкент": "https://stat.gov.kz/ru/region/shymkent/",
-    "Абайская Область": "https://stat.gov.kz/ru/region/abay/", "Акмолинская Область": "https://stat.gov.kz/ru/region/akmola/", "Актюбинская Область": "https://stat.gov.kz/ru/region/aktobe/",
-    "Алматинская Область": "https://stat.gov.kz/ru/region/almaty-obl/", "Атырауская Область": "https://stat.gov.kz/ru/region/atyrau/", "Восточно-Казахстанская Область": "https://stat.gov.kz/ru/region/vko/",
-    "Жамбылская Область": "https://stat.gov.kz/ru/region/zhambyl/", "Жетысуская Область": "https://stat.gov.kz/ru/region/zhetysu/", "Западно-Казахстанская Область": "https://stat.gov.kz/ru/region/zko/",
-    "Карагандинская Область": "https://stat.gov.kz/ru/region/karaganda/", "Костанайская Область": "https://stat.gov.kz/ru/region/kostanay/", "Кызылординская Область": "https://stat.gov.kz/ru/region/kyzylorda/",
-    "Мангыстауская Область": "https://stat.gov.kz/ru/region/mangystau/", "Павлодарская Область": "https://stat.gov.kz/ru/region/pavlodar/", "Северо-Казахстанская Область": "https://stat.gov.kz/ru/region/sko/",
-    "Туркестанская Область": "https://stat.gov.kz/ru/region/turkestan/", "Улытауская Область": "https://stat.gov.kz/ru/region/ulytau/"
-};
-const nameMap = { "АБАЙ": "Абайская Область", "ОБЛАСТЬ АБАЙ": "Абайская Область", "ЖЕТІСУ": "Жетысуская Область", "ОБЛАСТЬ ЖЕТІСУ": "Жетысуская Область", "УЛЫТАУ": "Улытауская Область", "ОБЛАСТЬ ҰЛЫТАУ": "Улытауская Область", "ВОСТОЧНО-КАЗАХСТАНСКАЯ": "Восточно-Казахстанская Область", "ЗАПАДНО-КАЗАХСТАНСКАЯ": "Западно-Казахстанская Область", "СЕВЕРО-КАЗАХСТАНСКАЯ": "Северо-Казахстанская Область", "ЮЖНО-КАЗАХСТАНСКАЯ ОБЛАСТЬ": "Туркестанская Область", "АЛМАТЫ": "Г. Алматы", "АСТАНА": "Г. Астана", "ШЫМКЕНТ": "Г. Шымкент", "РЕСПУБЛИКА КАЗАХСТАН": "РЕСПУБЛИКА КАЗАХСТАН" };
-
-function getStandardName(rawName) {
-    if (!rawName) return "";
-    let n = rawName.replace(/['"]+/g, '').toUpperCase().trim();
-    for (let key in regionLinks) if (key.toUpperCase() === n) return key;
-    if (nameMap[n]) return nameMap[n];
-    for (let key in nameMap) if (n.includes(key)) return nameMap[key];
-    return toTitleCase(rawName);
-}
-
-let currentZoomMode = 'obl'; 
-let currentMetric = 'retail';
-let currentRegion = "РЕСПУБЛИКА КАЗАХСТАН";
-let chartMode = "pop"; 
-let myChart = null;
-let selectedLayer = null; 
-let lastHighlighted = null; // Исправление 4: защита выделения
-const db = { pop: [], crime: [], vvp: [], cpi: [] };
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 
 const metricsConfig = {
     retail: { field: 'Розничная торговля – продовольственные товары', title: 'Розничная торговля', colors: ['#fff7bc','#fee391','#fec44f','#fe9929','#ec7014','#cc4c02'], breaks: [1e6, 5e6, 15e6, 30e6, 60e6] },
     wholesale: { field: 'Оптовая торговля – продовольственные товары', title: 'Оптовая торговля', colors: ['#e0f3db','#ccebc5','#a8ddb5','#7bccc4','#4eb3d3','#2b8cbe'], breaks: [1e6, 10e6, 50e6, 100e6, 200e6] },
     population: { field: 'Численность населения', title: 'Население', colors: ['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#756bb1','#54278f'], breaks: [15000, 30000, 50000, 100000, 200000] },
-<<<<<<< HEAD
     crime: { field: 'crime_rate', title: 'Преступность', colors: ['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'], breaks: [100, 500, 1000, 2000, 5000] },
     vvp: { field: 'vrp', title: 'ВРП на душу', colors: ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c'], breaks: [2000, 3200, 5800, 10500] },
     queue: { field: 'estate_demand', title: 'Очередники', colors: ['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#756bb1'], breaks: [20000, 26000, 32000, 45000] },
     susn: { field: 'СУСН (человек)', title: 'СУСН (люди)', colors: ['#fee5d9','#fcae91','#fb6a4a','#de2d26','#a50f15'], breaks: [655, 1883, 3899, 6950, 12263] },
-=======
-    crime: { field: 'crime_rate', title: 'Преступность (условно)', colors: ['#fee5d9','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'], breaks: [100, 500, 1000, 2000, 5000] },
-    vvp: { field: 'vvp_val', title: 'ВРП', colors: ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c'], breaks: [1e9, 5e9, 10e9, 50e9, 100e9] },
-    cpi: { field: 'cpi_val', title: 'ИПЦ', colors: ['#f7fcf5','#e5f5e0','#c7e9c0','#a1d99b','#74c476','#41ab5d'], breaks: [100, 102, 105, 110, 115] },
-    queue: { field: 'estate_demand', title: 'Очередники', colors: ['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#756bb1'], breaks: [20000, 26000, 32000, 45000] },
-    susn: { field: 'susn', title: 'СУСН', colors: ['#fee0d2','#fcbba1','#fc9272','#fb6a4a','#ef3b2c'], breaks: [650, 2000, 4000, 7000] },
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     balance: { field: null, title: 'Баланс', colors: [], breaks: [] }
 };
 
 let map, oblastLayer, bordersLayer, districtsLayer, townsLayer, okrugaLayer, storagesLayer, fairsLayer;
 
-<<<<<<< HEAD
 function getColor(val, metric) {
     if(metric === 'balance') return '#e0e0e0';
     const conf = metricsConfig[metric];
     if(!conf || !conf.colors) return '#eee';
-=======
-// --- ВСПОМОГАТЕЛЬНЫЕ ---
-function toTitleCase(s) { return s ? s.toLowerCase().replace(/(?:^|\s|-)\S/g, a=>a.toUpperCase()) : ''; }
-function formatNum(n) { if(!n) return '0'; if(n>=1e9) return (n/1e9).toFixed(2)+' млрд'; if(n>=1e6) return (n/1e6).toFixed(2)+' млн'; if(n>=1e3) return (n/1e3).toFixed(1)+' тыс'; return n; }
-function getColor(val, metric) {
-    if(metric === 'balance') return '#e0e0e0';
-    const conf = metricsConfig[metric];
-    if(!conf || !conf.field || !val) return '#eee';
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     for(let i=0; i<conf.breaks.length; i++) if(val < conf.breaks[i]) return conf.colors[i];
     return conf.colors[conf.colors.length-1];
 }
 
-<<<<<<< HEAD
 function getUniversalStyle(f, level) {
     let val = 0;
     
@@ -629,21 +389,6 @@ function getLatestPopulation(regionName) {
         return parseFloat(sorted[0].value);
     }
     return 0;
-=======
-// Функции стилизации (Исправление 2: защита от undefined)
-function getLayerStyle(f, weight, color, opacity) {
-    const field = metricsConfig[currentMetric]?.field;
-    let fillColor = '#eee';
-    if (field) {
-        fillColor = getColor(f.properties[field], currentMetric);
-    }
-    return {
-        fillColor: fillColor,
-        color: color,
-        weight: weight,
-        fillOpacity: opacity
-    };
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 }
 
 // --- ИНИЦИАЛИЗАЦИЯ ---
@@ -652,7 +397,6 @@ L.control.zoom({ position: 'topright' }).addTo(map);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
 Promise.all([
-<<<<<<< HEAD
     safeFetch('balance.geojson', {type:'FeatureCollection',features:[]}),
     safeFetch('oblborders.geojson', {type:'FeatureCollection',features:[]}),
     safeFetch('districts.geojson', {type:'FeatureCollection',features:[]}),
@@ -676,36 +420,10 @@ Promise.all([
                 handleMapClick(e, f);
                 const content = getUniversalPopup(f, 'obl');
                 l.bindPopup(content, {maxWidth:420}).openPopup();
-=======
-    fetch('balance.geojson').then(r=>r.json()),
-    fetch('oblborders.geojson').then(r=>r.json()),
-    fetch('districts.geojson').then(r=>r.json()).catch(()=>({type:'FeatureCollection',features:[]})),
-    fetch('okruga.geojson').then(r=>r.json()).catch(()=>({type:'FeatureCollection',features:[]})),
-    fetch('towns.geojson').then(r=>r.json()).catch(()=>({type:'FeatureCollection',features:[]})),
-    fetch('storages.geojson').then(r=>r.json()).catch(()=>({type:'FeatureCollection',features:[]})),
-    fetch('fairs.geojson').then(r=>r.json()).catch(()=>({type:'FeatureCollection',features:[]})),
-    fetch('703831.json').then(r=>r.json()), fetch('704767-kolichestvo-prestupleniy.json').then(r=>r.json()),
-    fetch('2709379-vvp-metodom-proizvodstva.json').then(r=>r.json()), fetch('ИПЦ по регионам в 2025г.csv').then(r=>r.text())
-]).then(([oblG, bordG, distG, okrG, twnG, storeG, fairG, popD, criD, vvpD, cpiR]) => {
-    
-    db.pop = popD; db.crime = criD; db.vvp = vvpD; parseCPI_Tab(cpiR);
-
-    // 1. ОБЛАСТИ
-    oblastLayer = L.geoJSON(oblG, {
-        style: (f) => getLayerStyle(f, 1, '#444', 0.6),
-        onEachFeature: (f,l) => {
-            l.bindPopup(getDynamicBalancePopup(f), {maxWidth:400});
-            l.on('click', e => { 
-                L.DomEvent.stopPropagation(e); // Исправление 3
-                highlightFeature(e); 
-                currentRegion = getStandardName(f.properties.ADM1_EN); 
-                updateChart(); 
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
             });
         }
     });
 
-<<<<<<< HEAD
     districtsLayer = L.geoJSON(distG, {
         style: (f) => getUniversalStyle(f, 'dist'),
         onEachFeature: (f,l) => {
@@ -713,21 +431,10 @@ Promise.all([
                 handleMapClick(e, f);
                 const content = getUniversalPopup(f, 'dist');
                 l.bindPopup(content, {maxWidth:400}).openPopup();
-=======
-    // 2. РАЙОНЫ
-    districtsLayer = L.geoJSON(distG, {
-        style: (f) => getLayerStyle(f, 1, 'white', 0.8),
-        onEachFeature: (f,l) => {
-            l.bindPopup(generateDistrictPopup(f.properties));
-            l.on('click', e => {
-                L.DomEvent.stopPropagation(e); // Исправление 3
-                highlightFeature(e);
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
             });
         }
     });
 
-<<<<<<< HEAD
     okrugaLayer = L.geoJSON(okrG, { 
         style: (f) => getUniversalStyle(f, 'okrug'), 
         onEachFeature:(f,l)=> {
@@ -801,60 +508,10 @@ function highlightFeature(e) {
         if(p['name:ru']) { w=1; c='#333'; } 
         lastHighlighted.setStyle({ weight: w, color: c });
     }
-=======
-    // 3. ОКРУГА и НП
-    okrugaLayer = L.geoJSON(okrG, { style: { fillColor:'#2ecc71', color:'white', weight:0.5, fillOpacity:0.6 }, onEachFeature:(f,l)=>l.bindPopup(f.properties.NAME) });
-    townsLayer = L.geoJSON(twnG, { pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:5,fillColor:'#e74c3c',color:'white',weight:1,fillOpacity:0.9}), onEachFeature:(f,l)=>l.bindPopup(f.properties.NAME) });
-
-    // 4. ГРАНИЦЫ
-    bordersLayer = L.geoJSON(bordG, { style:{color:'#2c3e50', weight:2, fill:false}, interactive:false, pane:'overlayPane' }).addTo(map);
-
-    // 5. ТОЧКИ
-    const storeIcon = L.icon({iconUrl:'warehouse.png', iconSize:[24,24], iconAnchor:[12,24], popupAnchor:[0,-20]});
-    const fairIcon = L.icon({iconUrl:'stall.png', iconSize:[24,24], iconAnchor:[12,24], popupAnchor:[0,-20]});
-    storagesLayer = L.geoJSON(storeG, { pointToLayer:(f,ll)=>L.marker(ll,{icon:storeIcon}), onEachFeature:(f,l)=>l.bindPopup(f.properties['Наименование']||'Склад') });
-    fairsLayer = L.geoJSON(fairG, { pointToLayer:(f,ll)=>L.marker(ll,{icon:fairIcon}), onEachFeature:(f,l)=>l.bindPopup(f.properties['Название']||'Ярмарка') });
-
-    updateMapState(); updateChart(); updateLegend();
-
-    // Toggle Handlers
-    document.getElementById('storageToggle').addEventListener('change', e => e.target.checked ? map.addLayer(storagesLayer) : map.removeLayer(storagesLayer));
-    document.getElementById('fairsToggle').addEventListener('change', e => e.target.checked ? map.addLayer(fairsLayer) : map.removeLayer(fairsLayer));
-
-    // Лоадер для ссылок (Исправление 8)
-    document.querySelectorAll('.akmola-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const href = this.getAttribute('href');
-            const loaderImg = this.getAttribute('data-loader-img') || 'gluster_2020.png'; // Можно задать в HTML
-            const imgEl = document.getElementById('loaderImage');
-            if(imgEl) imgEl.src = loaderImg;
-            document.getElementById('mapTransitionLoader').style.display = 'flex';
-            setTimeout(() => { window.location.href = href; }, 500);
-        });
-    });
-
-}).catch(e => console.error(e));
-
-// --- ЛОГИКА ---
-function highlightFeature(e) {
-    // Исправление 4: Сброс предыдущего выделения
-    if (lastHighlighted) {
-        // Чтобы сбросить стиль, проще всего вызвать setStyle с базовыми параметрами.
-        // Или, если используем geoJSON style function, можно resetStyle (но нужно быть осторожным с динамикой).
-        // Простой сброс толщины:
-        lastHighlighted.setStyle({ weight: 1, color: lastHighlighted.feature.properties.ADM2_EN ? 'white' : '#444' }); 
-    }
-    
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     const layer = e.target;
     layer.setStyle({ color: '#008b8b', weight: 3, opacity: 1 });
     layer.bringToFront();
     if(bordersLayer) bordersLayer.bringToFront();
-<<<<<<< HEAD
-=======
-    
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     lastHighlighted = layer;
 }
 
@@ -871,25 +528,16 @@ function toggleDashboard() {
     if(myChart) setTimeout(()=>myChart.resize(), 300);
 }
 
-<<<<<<< HEAD
-=======
-// Исправление 1: setLayer принимает кнопку
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 function setLayer(metric, btn) {
     currentMetric = metric;
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     
-<<<<<<< HEAD
     if(oblastLayer) oblastLayer.setStyle(f => getUniversalStyle(f, 'obl'));
     if(districtsLayer) districtsLayer.setStyle(f => getUniversalStyle(f, 'dist'));
     if(okrugaLayer) okrugaLayer.setStyle(f => getUniversalStyle(f, 'okrug'));
     if(townsLayer) townsLayer.setStyle(f => getUniversalStyle(f, 'town'));
     
-=======
-    if(oblastLayer) oblastLayer.setStyle(f => getLayerStyle(f, 1, '#444', 0.6));
-    if(districtsLayer) districtsLayer.setStyle(f => getLayerStyle(f, 1, 'white', 0.8));
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     updateLegend();
 }
 
@@ -900,45 +548,12 @@ function manualSwitchLevel(mode) {
     updateMapState();
 }
 
-<<<<<<< HEAD
 function updateMapState() {
     [oblastLayer, districtsLayer, okrugaLayer, townsLayer].forEach(l => { if(l && map.hasLayer(l)) map.removeLayer(l); });
     if(currentZoomMode === 'obl' && oblastLayer) map.addLayer(oblastLayer);
     else if(currentZoomMode === 'dist' && districtsLayer) map.addLayer(districtsLayer);
     else if(currentZoomMode === 'okrug' && okrugaLayer) map.addLayer(okrugaLayer);
     else if(currentZoomMode === 'town' && townsLayer) map.addLayer(townsLayer);
-=======
-// Исправление 7: Эффективное переключение слоев
-function updateMapState() {
-    // Области
-    if (currentZoomMode === 'obl') {
-        if (!map.hasLayer(oblastLayer) && oblastLayer) map.addLayer(oblastLayer);
-    } else {
-        if (map.hasLayer(oblastLayer)) map.removeLayer(oblastLayer);
-    }
-
-    // Районы
-    if (currentZoomMode === 'dist') {
-        if (!map.hasLayer(districtsLayer) && districtsLayer) map.addLayer(districtsLayer);
-    } else {
-        if (map.hasLayer(districtsLayer)) map.removeLayer(districtsLayer);
-    }
-
-    // Округа
-    if (currentZoomMode === 'okrug') {
-        if (!map.hasLayer(okrugaLayer) && okrugaLayer) map.addLayer(okrugaLayer);
-    } else {
-        if (map.hasLayer(okrugaLayer)) map.removeLayer(okrugaLayer);
-    }
-
-    // Города
-    if (currentZoomMode === 'town') {
-        if (!map.hasLayer(townsLayer) && townsLayer) map.addLayer(townsLayer);
-    } else {
-        if (map.hasLayer(townsLayer)) map.removeLayer(townsLayer);
-    }
-
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
     if(bordersLayer) bordersLayer.bringToFront();
 }
 
@@ -947,7 +562,6 @@ function updateLegend() {
     if(currentMetric === 'balance') { el.innerHTML='<b>Баланс</b><br>Кликните на регион'; return; }
     const c = metricsConfig[currentMetric];
     if(!c || !c.colors) { el.innerHTML=''; return; }
-<<<<<<< HEAD
     
     let unit = (currentMetric === 'vvp') ? ' (тыс. ₸)' : '';
     let h = `<div class="legend-title">${c.title}${unit}</div>`;
@@ -957,32 +571,12 @@ function updateLegend() {
         if (i === 0) label = '< ' + formatNum(c.breaks[0]);
         else if (i === c.colors.length - 1) label = '> ' + formatNum(c.breaks[c.breaks.length - 1]);
         else label = formatNum(c.breaks[i-1]) + ' – ' + formatNum(c.breaks[i]);
-=======
-    let h = `<div class="legend-title">${c.title}</div>`;
-    
-    // Исправление 5: Корректные лейблы
-    c.colors.forEach((col, i) => {
-        let label;
-        if (i === 0) {
-            label = '< ' + formatNum(c.breaks[0]);
-        } else if (i === c.colors.length - 1) {
-             // Для последнего цвета (который берется если value >= последнего break)
-             // Логика getColor: for(...) if val < break return col.
-             // Последний цвет берется если цикл прошел. Значит value >= последнего брейка
-             // Но массив breaks имеет длину N-1 от цветов? В конфиге: 6 цветов, 5 брейков.
-             // breaks[i] может быть undefined для последнего.
-             label = '> ' + formatNum(c.breaks[c.breaks.length - 1]);
-        } else {
-            label = formatNum(c.breaks[i-1]) + ' – ' + formatNum(c.breaks[i]);
-        }
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
         h += `<div class="legend-item"><div class="legend-color" style="background:${col}"></div>${label}</div>`;
     });
     el.innerHTML = h;
 }
 
 // --- ГРАФИКИ ---
-<<<<<<< HEAD
 function parseDate(str) {
     try {
         if (!str) return new Date(0);
@@ -1006,39 +600,10 @@ function parseDate(str) {
 
 function switchChartMode(m, btn) { 
     chartMode = m; document.querySelectorAll('.chart-selector button').forEach(b=>b.classList.remove('active')); if(btn) btn.classList.add('active'); updateChart(); 
-=======
-function parseCPI_Tab(text) { 
-    const lines = text.split('\n'); db.cpi = [];
-    for(let i=1;i<lines.length;i++){
-        let p=lines[i].split('\t').map(s=>s.replace(/^"|"$/g,'').trim());
-        // Исправление 6: Безопасный парсинг CSV
-        if(p.length<5 || !p[5] || !p[5].includes("прошлого года")) continue;
-        if(!p[3] || !p[9]) continue;
-        const val = parseFloat(p[9].replace(',', '.'));
-        if(isNaN(val)) continue;
-        db.cpi.push({region:getStandardName(p[3]), dateOriginal:p[1], value:val});
-    }
-}
-function parseDate(str) { 
-    if(str.includes('.')) return new Date(str.split('.').reverse().join('-'));
-    let m={январь:0,февраль:1,март:2,апрель:3,май:4,июнь:5,июль:6,август:7,сентябрь:8,октябрь:9,ноябрь:10,декабрь:11};
-    let p=str.toLowerCase().replace(' г.','').trim().split(' ');
-    if(!p[1]) return new Date();
-    return new Date(parseInt(p[1]), m[p[0]]||0, 1);
-}
-
-// Исправление 1: switchChartMode принимает кнопку
-function switchChartMode(m, btn) { 
-    chartMode = m; 
-    document.querySelectorAll('.chart-selector button').forEach(b=>b.classList.remove('active')); 
-    if(btn) btn.classList.add('active'); 
-    updateChart(); 
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 }
 
 function updateChart() {
     const ctx = document.getElementById('mainChart').getContext('2d');
-<<<<<<< HEAD
     if(myChart) { myChart.destroy(); myChart = null; }
     
     const linkBtn = document.getElementById('stat-link');
@@ -1228,112 +793,6 @@ function getUniversalPopup(f, level) {
         <div class="popup-row"><span class="popup-label">Население:</span><span class="popup-value">${formatNum(pop)}</span></div>
     ${footer}</div>`;
 }
-=======
-    if(myChart) myChart.destroy();
-    
-    document.getElementById('region-title').innerText = currentRegion;
-    let labels=[], data=[], label="", color="#333", type='line';
-    
-    if(chartMode==='pop'){
-        const item = db.pop.find(d => getStandardName(d.termNames[0])===currentRegion && d.termNames.some(t=>String(t).toLowerCase()==="все группы"||String(t).toLowerCase()==="всего"));
-        if(item){ const s=item.periods.sort((a,b)=>parseDate(a.date)-parseDate(b.date)); labels=s.map(p=>p.name.replace(' год','')); data=s.map(p=>parseFloat(p.value)); label="Численность"; color="#3498db"; }
-    } else if(chartMode==='crime'){
-        const item = db.crime.find(d => getStandardName(d.termNames[0])===currentRegion);
-        if(item){ const s=item.periods.filter(p=>p.name.includes('Декабрь')).sort((a,b)=>parseDate(a.date)-parseDate(b.date)); labels=s.map(p=>p.date.split('.')[2]); data=s.map(p=>parseFloat(p.value)); label="Преступления"; color="#c0392b"; }
-    } else if(chartMode==='vvp'){
-        const item = db.vvp.find(d => getStandardName(d.termNames[0])===currentRegion);
-        if(item){ const s=item.periods.sort((a,b)=>parseDate(a.date)-parseDate(b.date)); labels=s.map(p=>p.name.replace(' год','')); data=s.map(p=>parseFloat(p.value)/1e9); label="ВРП (млрд)"; type='bar'; color="#27ae60"; }
-    } else if(chartMode==='cpi'){
-        const s = db.cpi.filter(d=>d.region===currentRegion).sort((a,b)=>parseDate(a.dateOriginal)-parseDate(b.dateOriginal)).slice(-12);
-        labels=s.map(d=>d.dateOriginal.replace(' г.','')); data=s.map(d=>d.value); label="ИПЦ"; color="#e67e22";
-    }
-
-    if(!data.length) { myChart = new Chart(ctx,{type:'bar',data:{labels:["Нет данных"],datasets:[{label:"Нет данных",data:[0]}]}}); return; }
-
-    myChart = new Chart(ctx, {
-        type: type,
-        data: { labels: labels, datasets: [{ label: label, data: data, backgroundColor: type==='bar'?color:'transparent', borderColor: color, borderWidth: 2, tension: 0.3 }] },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: chartMode!=='cpi' }, x: { ticks: { font: { size: 9 } } } }, plugins: { legend: { display: false } } }
-    });
-}
-
-function getDynamicBalancePopup(f) {
-    const p = f.properties;
-    const oblastName = toTitleCase(p.ADM1_EN || p.ADM_1_RUS || 'Область');
-    
-    if (currentMetric === 'queue') {
-        const estateDemand = p['estate_demand'] || 0;
-        const estateRecieved = p['estate_recieved'] || 0;
-        return `<div style="min-width:250px;">
-            <div class="popup-header">${oblastName}</div>
-            <div class="popup-body" style="padding:15px;">
-                <div class="popup-row"><span class="popup-label">Очередники:</span><span class="popup-value">${formatNum(estateDemand)}</span></div>
-                <div class="popup-row"><span class="popup-label">Получили жилье:</span><span class="popup-value">${formatNum(estateRecieved)}</span></div>
-            </div>
-        </div>`;
-    }
-
-    let items = [];
-    for (const [product, rawValue] of Object.entries(p)) {
-        if (['fid','ADM1_EN','ADM_1_RUS','Shape_Leng','Shape_Area', 'estate_demand', 'estate_recieved'].includes(product)) continue;
-        if (!rawValue || typeof rawValue !== 'string' || !rawValue.trim()) continue;
-        
-        const regions = rawValue.split(';');
-        let prodContent = '';
-        regions.forEach(regStr => {
-            regStr = regStr.trim();
-            if (!regStr) return;
-            const match = regStr.match(/^(.*?)\s*\((\d+(?:\.\d+)?)\)$/);
-            if (match) {
-                const regionName = match[1];
-                const rawNum = match[2];
-                const markupDisplay = rawNum.replace('.', ',');
-                const val = parseFloat(rawNum);
-                let colorClass = 'markup-green';
-                if(val > 50) colorClass = 'markup-yellow';
-                if(val > 80) colorClass = 'markup-red';
-                
-                prodContent += `<div style="margin-top:3px; line-height:1.2">${regionName}<span class="balance-markup ${colorClass}">Наценка: ${markupDisplay}%</span></div>`;
-            } else { prodContent += `<div>${regStr}</div>`; }
-        });
-        if (prodContent) {
-            items.push(`<div class="balance-flow-item"><div class="popup-label" style="font-weight:bold;color:#333;margin-bottom:2px;">${product}:</div><div style="padding-left:5px; font-size:11.5px;">${prodContent}</div></div>`);
-        }
-    }
-    
-    const mid = Math.ceil(items.length / 2);
-    const leftCol = items.slice(0, mid).join('');
-    const rightCol = items.slice(mid).join('');
-    
-    return `<div style="min-width:450px;">
-        <div class="popup-header">${oblastName}</div>
-        <div class="popup-body">
-            <div class="balance-grid">
-                <div class="balance-col">${leftCol || '<i>Нет данных о потоках</i>'}</div>
-                <div class="balance-col">${rightCol}</div>
-            </div>
-        </div>
-    </div>`;
-}
-
-function generateDistrictPopup(p) {
-    const districtName = toTitleCase(p.ADM2_EN || p.ADM_2_RUS || 'Район');
-    const oblastName = toTitleCase(p.ADM1_EN || p.ADM_1_RUS || 'Область');
-    const retail = p['Розничная торговля – продовольственные товары'] || 0;
-    const wholesale = p['Оптовая торговля – продовольственные товары'] || 0;
-    const pop = p['Численность населения'] || 0;
-
-    return `<div style="min-width: 250px;">
-        <div class="popup-header">${districtName}<small style="display:block;font-weight:normal">${oblastName}</small></div>
-        <div class="popup-body">
-            <div class="popup-row"><span>Розница:</span><span class="popup-value">${formatNum(retail)}</span></div>
-            <div class="popup-row"><span>Опт:</span><span class="popup-value">${formatNum(wholesale)}</span></div>
-            <div class="popup-row"><span>Население:</span><span class="popup-value">${formatNum(pop)}</span></div>
-        </div>
-    </div>`;
-}
-
->>>>>>> 00488bb13b5d5ee2de804ce58e74c3ec5c021157
 </script>
 </body>
 </html>
