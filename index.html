@@ -2,7 +2,6 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<<<<<<< HEAD
 <title>Аналитическая Карта Казахстана</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
@@ -110,140 +109,12 @@
     @media (max-width: 420px) { .balance-grid { grid-template-columns: 1fr; } }
 
     #mapTransitionLoader { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9); display:none;align-items:center;justify-content:center;z-index:9999;flex-direction:column; }
-=======
-<title>Карта Казахстана – Торговля и Социальная сфера</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-<style>
-    /* --- ОСНОВНЫЕ СТИЛИ --- */
-    html,body{margin:0;padding:0;height:100%;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;overflow:hidden;}
-    #map{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;background:#f8fbff}
-    
-    /* --- СЛАЙДЕР УРОВНЕЙ --- */
-    .level-control-container {
-        position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-        z-index: 1000; background: white; padding: 10px 20px;
-        border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        display: flex; flex-direction: column; align-items: center; width: 300px;
-    }
-    .level-slider {
-        -webkit-appearance: none; width: 100%; height: 6px; border-radius: 5px; background: #d3d3d3; outline: none; margin: 10px 0;
-    }
-    .level-slider::-webkit-slider-thumb {
-        -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #1976D2; cursor: pointer; transition: .2s;
-    }
-    .level-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
-    .level-labels { display: flex; justify-content: space-between; width: 100%; font-size: 12px; font-weight: bold; color: #555; }
-    .level-labels span.active { color: #1976D2; }
-
-    /* --- ЛЕВАЯ ПАНЕЛЬ (АККОРДЕОН) --- */
-    .sidebar {
-        position: absolute; top: 20px; left: 20px; width: 260px;
-        background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        z-index: 1000; max-height: calc(100vh - 140px); overflow-y: auto;
-        display: flex; flex-direction: column;
-    }
-    .sidebar-header { padding: 15px; border-bottom: 1px solid #eee; font-weight: bold; font-size: 16px; color: #333; background: #f8f9fa; border-radius: 12px 12px 0 0; }
-    
-    .category-item { border-bottom: 1px solid #f0f0f0; }
-    .category-btn {
-        width: 100%; padding: 12px 15px; background: white; border: none;
-        text-align: left; cursor: pointer; font-size: 14px; font-weight: 600; color: #444;
-        display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;
-    }
-    .category-btn:hover { background: #f1f5f9; }
-    .category-btn::after { content: '▼'; font-size: 10px; transition: transform 0.3s; }
-    .category-item.active .category-btn::after { transform: rotate(180deg); }
-    .category-content {
-        max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #f8fbff;
-    }
-    .category-item.active .category-content { max-height: 500px; }
-
-    .layer-btn {
-        display: block; width: 100%; padding: 8px 15px 8px 25px; border: none; background: transparent;
-        text-align: left; cursor: pointer; font-size: 13px; color: #555; border-left: 3px solid transparent; transition: 0.2s;
-    }
-    .layer-btn:hover { background: #e3f2fd; color: #1565c0; }
-    .layer-btn.active { background: #e3f2fd; color: #1976D2; border-left-color: #1976D2; font-weight: 600; }
-    
-    .layer-toggle { padding: 8px 15px 8px 25px; display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; color: #555; }
-    .layer-toggle:hover { background: #fafafa; }
-
-    /* --- ПРАВЫЙ ВЕРХНИЙ УГОЛ --- */
-    .top-right-controls {
-        position: absolute; top: 20px; right: 20px; z-index: 1000;
-        display: flex; flex-direction: column; gap: 8px;
-    }
-    .akmola-link {
-        display:flex;align-items:center;gap:8px;color:#1976D2;
-        text-decoration:none;font-size:14px;padding:8px 12px;background:white;
-        border-radius:8px;transition:.3s;font-weight: 600;
-        justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .akmola-link:hover{background:#f0f8ff}
-    .akmola-link::after { content: "↗"; font-size: 16px; line-height: 1; }
-
-    /* --- ЛЕГЕНДА --- */
-    .legend {
-        position:absolute; bottom:30px; right:20px; background:white; padding:12px; border-radius:8px;
-        box-shadow:0 4px 20px rgba(0,0,0,.15); font-size:11.5px; max-width:220px; z-index:999;
-    }
-    .legend-title { margin-bottom:8px; font-size:12px; color:#333; font-weight:bold; }
-    .legend-item { display:flex; align-items:center; gap:8px; margin:4px 0; }
-    .legend-color { width:24px; height:16px; border:1px solid #ccc; border-radius: 2px; }
-
-    /* --- СТИЛИ ПОПАПОВ (Вернули старые + фикс кнопки) --- */
-    .leaflet-popup-content-wrapper { border-radius:8px !important; overflow: hidden; padding:0!important; }
-    .leaflet-popup-content { margin:0!important; width: 100% !important; }
-    
-    .popup-header { background:#1976D2; color:white; padding:12px 15px; font-weight:bold; font-size:14px; border-bottom: 1px solid #1565c0; }
-    .popup-header small { display: block; font-weight: normal; font-size: 11px; opacity: 0.9; margin-top: 2px; }
-    
-    .popup-body { padding: 0; font-size: 11.5px; color: #333; max-height: 320px; overflow-y: auto; }
-    .popup-section { padding: 10px 15px; border-bottom: 1px solid #eee; }
-    .section-title { font-weight: bold; color: #1976D2; font-size: 11px; text-transform: uppercase; margin-bottom: 6px; }
-    
-    .popup-row { display:flex; justify-content:space-between; margin:3px 0; align-items: center; }
-    .popup-label { color:#555; }
-    .popup-value { font-weight:700; color:#1976D2; text-align: right; }
-
-    /* Кнопка "Подробнее" - ТЕПЕРЬ БЕЛАЯ */
-    .popup-region-btn {
-        display: block; width: calc(100% - 20px); margin: 10px auto; padding: 8px 0;
-        background: #1976D2; color: white !important; text-align: center; border-radius: 6px;
-        text-decoration: none; font-weight: bold; font-size: 12px; transition: 0.2s;
-    }
-    .popup-region-btn:hover { background: #1565c0; text-decoration: none; color: white; }
-
-    /* Аккордеон цен */
-    .acc-header { cursor:pointer; background:#e3f2fd; padding:6px 10px; border-radius:4px; display:flex; justify-content:space-between; align-items:center; font-weight:bold; color:#1565c0; margin-top:5px; }
-    .acc-content { max-height:0; overflow-y:auto; transition:max-height .4s ease; background: #fff; }
-    .acc-open .acc-content { max-height:200px; border-top: 1px solid #eee; padding-top: 5px; }
-
-    /* Баланс разметка */
-    .balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px 15px; }
-    .balance-flow-item { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid #eee; }
-    .balance-markup { display: block; font-weight: bold; margin-top: 2px; font-size: 10px; }
-    .markup-green { color: #2e7d32; }
-    .markup-yellow { color: #f9a825; }
-    .markup-orange { color: #ef6c00; }
-    .markup-red { color: #c62828; }
-
-    /* Лоадер переходов */
-    #mapTransitionLoader {
-        position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);
-        display:none;align-items:center;justify-content:center;z-index:9999;flex-direction:column;color:#333;
-    }
-    #mapTransitionLoader img { animation: pulse 1.8s infinite ease-in-out; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
->>>>>>> fe9222a7d9f6522bf79d81c046bd62325a8938c0
 </style>
 </head>
 <body>
 
 <div id="map"></div>
 
-<<<<<<< HEAD
 <div class="admin-switch-container">
     <button class="level-btn active" id="btn-lvl-republic" onclick="manualSwitchLevel('republic')" title="Уровень Республики Казахстан">РЕСПУБЛИКА</button>
     <span class="level-separator">→</span>
@@ -376,63 +247,10 @@
 
 <div class="legend" id="legend"></div>
 <div id="mapTransitionLoader"><img src="https://i.gifer.com/ZZ5H.gif" alt="Loading" style="width:50px;"><p>Загрузка...</p></div>
-=======
-<div class="level-control-container">
-    <div class="level-labels">
-        <span id="lbl-obl">Область</span>
-        <span id="lbl-dst">Район</span>
-        <span id="lbl-city">НП</span>
-    </div>
-    <input type="range" min="0" max="2" value="1" step="1" class="level-slider" id="adminLevelSlider">
-</div>
-
-<div class="top-right-controls">
-    <a href="https://d05s4D1LBKwrkaccszeKOFu4-Xe7LDL-7BEiH.github.io/akmtrademapVa0HP07Ko/" class="akmola-link" data-loader-img="gluster_2020.png">Акмолинская область</a>
-    <a href="https://d05s4D1LBKwrkaccszeKOFu4-Xe7LDL-7BEiH.github.io/jMs7k0stanaykQeCY2bE8/" class="akmola-link" data-loader-img="kostanay_logo.png">г. Костанай</a>
-</div>
-
-<div class="sidebar">
-    <div class="sidebar-header">Панель управления</div>
-    
-    <div class="category-item active">
-        <button class="category-btn" onclick="toggleCategory(this)">Торговля</button>
-        <div class="category-content">
-            <button class="layer-btn active" data-metric="retail" data-level="1">Розничная торговля</button>
-            <button class="layer-btn" data-metric="wholesale" data-level="1">Оптовая торговля</button>
-            <button class="layer-btn" data-metric="balance" data-level="0">Продовольственный баланс</button>
-            <label class="layer-toggle"><input type="checkbox" id="storageToggle"> Овощехранилища</label>
-            <label class="layer-toggle"><input type="checkbox" id="fairsToggle"> Ярмарки</label>
-        </div>
-    </div>
-
-    <div class="category-item">
-        <button class="category-btn" onclick="toggleCategory(this)">Социальная сфера</button>
-        <div class="category-content">
-            <button class="layer-btn" data-metric="queue" data-level="0">Очередники МИО</button>
-            <button class="layer-btn" data-metric="susn" data-level="1">СУСН (Численность)</button>
-        </div>
-    </div>
-
-    <div class="category-item">
-        <button class="category-btn" onclick="toggleCategory(this)">Общие данные</button>
-        <div class="category-content">
-            <button class="layer-btn" data-metric="population" data-level="1">Численность населения</button>
-        </div>
-    </div>
-</div>
-
-<div class="legend" id="legend"></div>
-
-<div id="mapTransitionLoader">
-    <img id="loaderImage" src="gluster_2020.png" alt="Загрузка" style="width:150px;">
-    <p style="margin-top:20px;font-size:22px; color:#333; font-weight:600;">Переход к карте...</p>
-</div>
->>>>>>> fe9222a7d9f6522bf79d81c046bd62325a8938c0
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
-<<<<<<< HEAD
 // --- КОНФИГУРАЦИЯ ---
 const regionLinks = {
     "г. Астана": "https://stat.gov.kz/ru/region/astana/", "г. Алматы": "https://stat.gov.kz/ru/region/almaty/", "г. Шымкент": "https://stat.gov.kz/ru/region/shymkent/",
@@ -470,71 +288,12 @@ function escapeHtml(text) {
     if (text == null) return '';
     return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
-=======
-// --- 1. КОНФИГУРАЦИЯ ---
-const regionLinks = {
-    // Города республиканского значения
-    "Г. Астана": "https://stat.gov.kz/ru/region/astana/",
-    "Г. Алматы": "https://stat.gov.kz/ru/region/almaty/",
-    "Г. Шымкент": "https://stat.gov.kz/ru/region/shymkent/",
-
-    // Области
-    "Абайская Область": "https://stat.gov.kz/ru/region/abay/",
-    "Акмолинская Область": "https://stat.gov.kz/ru/region/akmola/",
-    "Актюбинская Область": "https://stat.gov.kz/ru/region/aktobe/",
-    "Алматинская Область": "https://stat.gov.kz/ru/region/almaty-obl/",
-    "Атырауская Область": "https://stat.gov.kz/ru/region/atyrau/",
-    "Восточно-Казахстанская Область": "https://stat.gov.kz/ru/region/vko/",
-    "Жамбылская Область": "https://stat.gov.kz/ru/region/zhambyl/",
-    "Жетысуская Область": "https://stat.gov.kz/ru/region/zhetysu/", // Или "Область Жетісу"
-    "Западно-Казахстанская Область": "https://stat.gov.kz/ru/region/zko/",
-    "Карагандинская Область": "https://stat.gov.kz/ru/region/karaganda/",
-    "Костанайская Область": "https://stat.gov.kz/ru/region/kostanay/",
-    "Кызылординская Область": "https://stat.gov.kz/ru/region/kyzylorda/",
-    "Мангыстауская Область": "https://stat.gov.kz/ru/region/mangystau/",
-    "Павлодарская Область": "https://stat.gov.kz/ru/region/pavlodar/",
-    "Северо-Казахстанская Область": "https://stat.gov.kz/ru/region/sko/",
-    "Туркестанская Область": "https://stat.gov.kz/ru/region/turkestan/",
-    "Улытауская Область": "https://stat.gov.kz/ru/region/ulytau/" // Или "Область Ұлытау"
-};
-
-const metricsConfig = {
-    retail: { field: 'Розничная торговля – продовольственные товары', title: 'Розничная торговля', level: 1 },
-    wholesale: { field: 'Оптовая торговля – продовольственные товары', title: 'Оптовая торговля', level: 1 },
-    population: { field: 'Численность населения', title: 'Население', level: 1 },
-    susn: { field: 'СУСН (человек)', title: 'СУСН', level: 1 },
-    queue: { field: 'estate_demand', title: 'Очередники МИО', level: 0 },
-    balance: { field: null, title: 'Продовольственный баланс', level: 0 }
-};
-
-const legendData = {
-    retail:     { colors: ['#ffffcc','#ffeda0','#fed976','#feb24c','#fd8d3c','#fc4e2a','#e31a1c','#b10026'], labels: ['< 850 тыс','850 тыс - 2.5 млн','2.5 - 6 млн','6 - 12.5 млн','12.5 - 50 млн','> 50 млн'] },
-    wholesale:  { colors: ['#ffffd4','#fee391','#fec44f','#fe9929','#ec7014','#cc4c02','#8c2d04'], labels: ['< 1 млн','1 - 5 млн','5 - 15 млн','15 - 50 млн','50 - 150 млн','> 150 млн'] },
-    population: { colors: ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c'], labels: ['< 15 тыс','15 - 30 тыс','30 - 50 тыс','50 - 100 тыс','100 - 200 тыс','> 200 тыс'] },
-    susn:       { colors: ['#ffd7de', '#fb6a6a', '#de2d26', '#a50f15', '#67000d'], labels: ['< 650','650 - 2 тыс','2 - 4 тыс','4 - 7 тыс','> 7 тыс'] },
-    queue:      { colors: ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8', '#756bb1', '#54278f'], labels: ['< 20 тыс', '20 - 26 тыс', '26 - 32 тыс', '32 - 38 тыс', '38 - 45 тыс', '> 45 тыс'] }
-};
-
-const priceColumns = [
-  'Мука пшеничная высшего сорта и 1 сорта', 'Хлеб ржаной', 'Хлеб ржано-пшеничный', 'Макаронные изделия',
-  'Крупа гречневая', 'Крупа рисовая', 'Картофель', 'Морковь', 'Лук репчатый', 'Капуста',
-  'Огурцы', 'Томаты', 'Свекла', 'Яблоки', 'Мясо птицы', 'Говядина', 'Баранина', 'Свинина',
-  'Молоко коровье', 'Творог', 'Сыр', 'Яйца куриные', 'Масло растительное', 'Сахар', 'Чай', 'Соль'
-];
-
-let currentMetric = 'retail';
-let currentLevel = 1;
-let map, districtsLayer, oblastLayer, storageLayer, fairsLayer;
-
-// --- 2. ПОДГОТОВКА ФУНКЦИЙ ---
->>>>>>> fe9222a7d9f6522bf79d81c046bd62325a8938c0
 
 function toTitleCase(str) {
     if (!str) return '';
     return str.toLowerCase().replace(/(?:^|\s|-)\S/g, function(a) { return a.toUpperCase(); });
 }
 
-<<<<<<< HEAD
 function getStandardName(rawName) {
     if (!rawName) return "";
     let n = rawName.replace(/['"]+/g, '').trim();
@@ -751,215 +510,10 @@ Promise.all([
                 handleMapClick(e, f);
                 const content = getUniversalPopup(f, 'np');
                 l.bindPopup(content, {maxWidth:300}).openPopup();
-=======
-function formatNum(n) {
-    if (!n) return '0';
-    if (n >= 1e9) return (n / 1e9).toFixed(2) + ' млрд';
-    if (n >= 1e6) return (n / 1e6).toFixed(2) + ' млн';
-    if (n >= 1000) return (n / 1000).toFixed(1) + ' тыс';
-    return n;
-}
-
-function getColor(value, metric) {
-    if (metric === 'balance') return '#e0e0e0';
-    if (!value) return '#eee';
-    const breaks = { 
-        retail: [850000,2500000,6000000,12500000,50000000], 
-        wholesale: [1000000,5000000,15000000,50000000,150000000], 
-        population: [15000,30000,50000,100000,200000], 
-        susn: [650,2000,4000,7000,12000],
-        queue: [20000, 26000, 32000, 38000, 45000]
-    };
-    const b = breaks[metric];
-    if(!b) return '#ccc';
-    const cols = legendData[metric].colors;
-    
-    if (value < b[0]) return cols[0];
-    if (value < b[1]) return cols[1];
-    if (value < b[2]) return cols[2];
-    if (value < b[3]) return cols[3];
-    if (value < b[4]) return cols[4];
-    return cols[cols.length - 1];
-}
-
-// === ПОПАПЫ (ВЕРНУЛ СТАРЫЙ КОД) ===
-
-// 1. ПОЛНЫЙ ПОПАП ДЛЯ РАЙОНОВ
-function generateDistrictPopup(p) {
-    const districtName = toTitleCase(p.ADM_2_RUS || p.ADM2_EN || 'Район');
-    const oblastName = toTitleCase(p.ADM_1_RUS || p.ADM1_EN || 'Область');
-    
-    const retail = p['Розничная торговля – продовольственные товары'] || 0;
-    const wholesale = p['Оптовая торговля – продовольственные товары'] || 0;
-    const pop = p['Численность населения'] || 0;
-    const susnFam = p['СУСН (семей)'] || 0;
-    const susnPeop = p['СУСН (человек)'] || 0;
-    const salary = p['Всего'] || 0;
-
-    // Аккордеон цен
-    let priceRows = '';
-    priceColumns.forEach(col => {
-        let val = 0;
-        for (let key in p) { if (key.includes(col)) { val = p[key]; break; } }
-        if (val) { priceRows += `<tr><td style="padding:2px 0;border-bottom:1px dashed #eee">${col}</td><td style="text-align:right;color:#1976D2;font-weight:bold">${Number(val).toFixed(1)} т</td></tr>`; }
-    });
-    if (!priceRows) priceRows = '<tr><td colspan="2" style="text-align:center;color:#999">Нет данных</td></tr>';
-
-    return `<div style="min-width: 320px;">
-        <div class="popup-header">${districtName}<small>${oblastName}</small></div>
-        <div class="popup-body">
-            <div class="popup-section">
-                <div class="section-title">ЭКОНОМИКА</div>
-                <div class="popup-row"><span class="popup-label">Розн. торг. (прод.):</span><span class="popup-value">${formatNum(retail)}</span></div>
-                <div class="popup-row"><span class="popup-label">Опт. торг. (прод.):</span><span class="popup-value">${formatNum(wholesale)}</span></div>
-                <div class="popup-row"><span class="popup-label">Средняя з/п:</span><span class="popup-value">${formatNum(salary)}</span></div>
-            </div>
-            <div class="popup-section">
-                <div class="section-title">НАСЕЛЕНИЕ</div>
-                <div class="popup-row"><span class="popup-label">Численность:</span><span class="popup-value">${formatNum(pop)}</span></div>
-                <div class="popup-row"><span class="popup-label">СУСН (семей / чел):</span><span class="popup-value">${susnFam} / ${susnPeop}</span></div>
-            </div>
-            <div style="padding: 0 15px 15px 15px;">
-                <div class="acc-header" onclick="this.parentElement.classList.toggle('acc-open')">
-                    НОРМА ПРОД. ОБЕСПЕЧЕНИЯ <span class="acc-arrow">▼</span>
-                </div>
-                <div class="acc-content">
-                    <table style="width:100%;border-collapse:collapse;font-size:11px;">${priceRows}</table>
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
-
-// 2. СЛОЖНЫЙ ПОПАП ДЛЯ ОБЛАСТЕЙ (БАЛАНС / ОЧЕРЕДЬ)
-function getMarkupClass(val) {
-    val = parseFloat(val);
-    if (isNaN(val)) return '';
-    if (val < 10) return 'markup-green';
-    if (val < 50) return 'markup-yellow';
-    if (val < 80) return 'markup-orange';
-    return 'markup-red';
-}
-
-function getDynamicBalancePopup(feature) {
-    const p = feature.properties;
-    const oblastName = toTitleCase(p.ADM_1_RUS || p.ADM1_EN || 'Область');
-    const link = regionLinks[oblastName] || '#';
-
-    // РЕЖИМ ОЧЕРЕДИ
-    if (currentMetric === 'queue') {
-        const estateDemand = p['estate_demand'] || 0;
-        const estateRecieved = p['estate_recieved'] || 0;
-        return `<div style="min-width:250px;">
-            <div class="popup-header">${oblastName}</div>
-            <div class="popup-body" style="padding:15px;">
-                <div class="popup-row"><span class="popup-label">Очередники:</span><span class="popup-value">${formatNum(estateDemand)}</span></div>
-                <div class="popup-row"><span class="popup-label">Получили жилье:</span><span class="popup-value">${formatNum(estateRecieved)}</span></div>
-                <a href="${link}" target="_blank" class="popup-region-btn">Подробнее о регионе ↗</a>
-            </div>
-        </div>`;
-    }
-
-    // РЕЖИМ БАЛАНСА (Парсинг строк)
-    let items = [];
-    for (const [product, rawValue] of Object.entries(p)) {
-        if (['fid','ADM1_EN','ADM_1_RUS','Shape_Leng','Shape_Area', 'estate_demand', 'estate_recieved'].includes(product)) continue;
-        if (!rawValue || typeof rawValue !== 'string' || !rawValue.trim()) continue;
-        
-        const regions = rawValue.split(';');
-        let prodContent = '';
-        regions.forEach(regStr => {
-            regStr = regStr.trim();
-            if (!regStr) return;
-            const match = regStr.match(/^(.*?)\s*\((\d+(?:\.\d+)?)\)$/);
-            if (match) {
-                const regionName = match[1];
-                const rawNum = match[2];
-                const markupDisplay = rawNum.replace('.', ',');
-                const colorClass = getMarkupClass(rawNum);
-                prodContent += `<div style="margin-top:3px; line-height:1.2">${regionName}<span class="balance-markup ${colorClass}">Наценка: ${markupDisplay}%</span></div>`;
-            } else { prodContent += `<div>${regStr}</div>`; }
-        });
-        if (prodContent) {
-            items.push(`<div class="balance-flow-item"><div class="popup-label" style="font-weight:bold;color:#333;margin-bottom:2px;">${product}:</div><div style="padding-left:5px; font-size:11.5px;">${prodContent}</div></div>`);
-        }
-    }
-    
-    // Формируем 2 колонки
-    const mid = Math.ceil(items.length / 2);
-    const leftCol = items.slice(0, mid).join('');
-    const rightCol = items.slice(mid).join('');
-    
-    return `<div style="min-width:450px;">
-        <div class="popup-header">${oblastName}</div>
-        <div class="popup-body">
-            <div class="balance-grid">
-                <div class="balance-col">${leftCol || '<i>Нет данных о потоках</i>'}</div>
-                <div class="balance-col">${rightCol}</div>
-            </div>
-            <a href="${link}" target="_blank" class="popup-region-btn">Подробнее о регионе ↗</a>
-        </div>
-    </div>`;
-}
-
-// 3. ОВОЩЕХРАНИЛИЩА (ВЕРНУЛ СТИЛЬ)
-function storagePopup(p) {
-    const resTV = p['Результат ТВ'];
-    let tvBlock = '';
-    if (resTV) {
-        tvBlock = `<div style="margin-top:8px;"><div class="acc-header" onclick="this.parentElement.classList.toggle('acc-open')" style="font-size:11px;padding:4px 8px;">Результат ТВ <span class="acc-arrow">▼</span></div><div class="acc-content" style="padding:8px; background:#f9f9f9; font-size:11px; line-height:1.4;">${resTV}</div></div>`;
-    }
-    return `<div style="min-width:280px;">
-        <div class="popup-header" style="font-size:13px">${p['Наименование компании владельца']?.trim() || 'Овощехранилище'}</div>
-        <div style="padding:15px;font-size:11.5px;line-height:1.4">
-            <div><b>Адрес:</b> ${p['Адрес'] || '-'}</div>
-            <div style="margin-top:4px"><b>Мощность:</b> ${p['Мощность овощехранилища, в тоннах'] || '-'} т</div>
-            ${tvBlock}
-        </div>
-    </div>`;
-}
-
-// 4. ЯРМАРКИ (ВЕРНУЛ СТИЛЬ)
-function fairPopup(p) {
-    return `<div style="min-width:240px;">
-        <div class="popup-header" style="background:#2e7d32;font-size:13px">${p['Название'] || 'Ярмарка'}</div>
-        <div style="padding:15px;font-size:12px">
-            <b>Адрес:</b><br>${p['Адрес'] || '-'}
-        </div>
-    </div>`;
-}
-
-// --- 3. ИНИЦИАЛИЗАЦИЯ КАРТЫ ---
-map = L.map('map', { center: [48.0, 66.0], zoom: 5, zoomControl: false });
-L.control.zoom({ position: 'topright' }).addTo(map);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap'}).addTo(map);
-
-// Загрузка данных
-Promise.all([
-    fetch('districts.geojson').then(r=>r.json()),
-    fetch('balance.geojson').then(r=>r.json()),
-    fetch('storages.geojson').then(r=>r.json()),
-    fetch('fairs.geojson').then(r=>r.json())
-]).then(([districtsGeo, oblastGeo, storagesGeo, fairsGeo]) => {
-
-    // --- СЛОЙ ОБЛАСТЕЙ (Level 0) ---
-    oblastLayer = L.geoJSON(oblastGeo, {
-        style: (f) => {
-            if (currentMetric === 'queue') {
-                return { fillColor: getColor(f.properties['estate_demand'], 'queue'), weight: 1.5, color: '#fff', fillOpacity: 0.85, dashArray:'' };
-            }
-            return { fillColor: '#e0e0e0', color: '#333', weight: 2, dashArray: '5, 5', fillOpacity: 0.5 };
-        },
-        onEachFeature: (f, layer) => {
-            layer.bindPopup(() => getDynamicBalancePopup(f), {maxWidth: 500});
-            layer.on('click', (e) => {
-                map.fitBounds(e.target.getBounds());
->>>>>>> fe9222a7d9f6522bf79d81c046bd62325a8938c0
             });
         }
     });
 
-<<<<<<< HEAD
     bordersLayer = L.geoJSON(bordG, { style:{color:'#888', weight:1.5, dashArray:'4, 4', fill:false}, interactive:false, pane:'overlayPane' }).addTo(map);
 
     const storeIcon = L.icon({iconUrl:'warehouse.png', iconSize:[18,18], iconAnchor:[9,18], popupAnchor:[0,-14]});
@@ -1137,134 +691,10 @@ function updateMapState() {
 
     if (bordersLayer && currentZoomMode !== 'town') bordersLayer.bringToFront();
     if (kazBorderLayer) kazBorderLayer.bringToFront();
-=======
-    // --- СЛОЙ РАЙОНОВ (Level 1) ---
-    districtsLayer = L.geoJSON(districtsGeo, {
-        style: (f) => {
-             const field = metricsConfig[currentMetric]?.field;
-             // Если поле не найдено (например, выбран Баланс, но мы на слое районов) - делаем нейтральным
-             if(!field) return { fillColor: '#eee', weight: 1, color: '#ccc', fillOpacity: 0.5 };
-             return { fillColor: getColor(f.properties[field], currentMetric), weight: 1, color: 'white', fillOpacity: 0.85 };
-        },
-        onEachFeature: (f, layer) => {
-            layer.bindPopup(generateDistrictPopup(f.properties), {maxWidth: 400});
-            layer.on('click', (e) => L.DomEvent.stopPropagation(e));
-        }
-    });
-
-    // --- ТОЧКИ (ВЕРНУЛ ИКОНКИ) ---
-    const warehouseIcon = L.icon({iconUrl:'warehouse.png', iconSize:[24,24], iconAnchor:[12,24], popupAnchor:[0,-20]});
-    const stallIcon = L.icon({iconUrl:'stall.png', iconSize:[24,24], iconAnchor:[12,24], popupAnchor:[0,-20]});
-    
-    storageLayer = L.geoJSON(storagesGeo, {
-        pointToLayer: (f,ll) => L.marker(ll, {icon: warehouseIcon}),
-        onEachFeature: (f,l) => l.bindPopup(storagePopup(f.properties))
-    });
-    
-    fairsLayer = L.geoJSON(fairsGeo, {
-        pointToLayer: (f,ll) => L.marker(ll, {icon: stallIcon}),
-        onEachFeature: (f,l) => l.bindPopup(fairPopup(f.properties))
-    });
-
-    // Первичная отрисовка
-    updateMapState();
-
-    // Чекбоксы
-    document.getElementById('storageToggle').addEventListener('change', e => {
-        e.target.checked ? map.addLayer(storageLayer) : map.removeLayer(storageLayer);
-    });
-    document.getElementById('fairsToggle').addEventListener('change', e => {
-        e.target.checked ? map.addLayer(fairsLayer) : map.removeLayer(fairsLayer);
-    });
-    
-    // Ссылки справа (лоадер)
-    document.querySelectorAll('.akmola-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const href = this.getAttribute('href');
-            const loaderImg = this.getAttribute('data-loader-img') || 'gluster_2020.png';
-            document.getElementById('loaderImage').src = loaderImg;
-            document.getElementById('mapTransitionLoader').style.display = 'flex';
-            setTimeout(() => { window.location.href = href; }, 500);
-        });
-    });
-
-}).catch(err => console.error("Ошибка загрузки:", err));
-
-// --- 4. ЛОГИКА ИНТЕРФЕЙСА ---
-
-const slider = document.getElementById('adminLevelSlider');
-slider.addEventListener('input', (e) => {
-    currentLevel = parseInt(e.target.value);
-    highlightLevelLabels(currentLevel);
-    updateMapState();
-});
-
-function highlightLevelLabels(lvl) {
-    document.getElementById('lbl-obl').className = lvl === 0 ? 'active' : '';
-    document.getElementById('lbl-dst').className = lvl === 1 ? 'active' : '';
-    document.getElementById('lbl-city').className = lvl === 2 ? 'active' : '';
-}
-
-document.querySelectorAll('.layer-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        
-        currentMetric = this.dataset.metric;
-        const requiredLevel = parseInt(this.dataset.level);
-
-        if (currentLevel !== requiredLevel) {
-            currentLevel = requiredLevel;
-            slider.value = currentLevel;
-            highlightLevelLabels(currentLevel);
-        }
-
-        updateMapState();
-        updateLegend();
-    });
-});
-
-window.toggleCategory = function(btn) {
-    const item = btn.parentElement;
-    const wasActive = item.classList.contains('active');
-    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
-    if (!wasActive) item.classList.add('active');
-};
-
-function updateMapState() {
-    if (currentLevel === 0) {
-        // Уровень ОБЛАСТИ
-        if (map.hasLayer(districtsLayer)) map.removeLayer(districtsLayer);
-        if (!map.hasLayer(oblastLayer)) map.addLayer(oblastLayer);
-        
-        if (oblastLayer) oblastLayer.setStyle((f) => {
-             if (currentMetric === 'queue') {
-                 return { fillColor: getColor(f.properties['estate_demand'], 'queue'), weight: 1.5, color: '#fff', fillOpacity: 0.9, dashArray: '' };
-             }
-             return { fillColor: '#e0e0e0', color: '#666', weight: 2, dashArray: '5, 5', fillOpacity: 0.4 };
-        });
-    } else if (currentLevel === 1) {
-        // Уровень РАЙОНЫ
-        if (map.hasLayer(oblastLayer)) map.removeLayer(oblastLayer);
-        if (!map.hasLayer(districtsLayer)) map.addLayer(districtsLayer);
-        
-        if (districtsLayer) districtsLayer.setStyle((f) => {
-            const field = metricsConfig[currentMetric]?.field;
-            if (!field) return { fillColor: '#eee', weight: 1, color: '#ccc', fillOpacity: 0.5 }; 
-            return { fillColor: getColor(f.properties[field], currentMetric), weight: 1, color: 'white', fillOpacity: 0.85 };
-        });
-    } else {
-        // Уровень НП (Пока пусто)
-        map.removeLayer(oblastLayer);
-        map.removeLayer(districtsLayer);
-    }
->>>>>>> fe9222a7d9f6522bf79d81c046bd62325a8938c0
 }
 
 function updateLegend() {
     const el = document.getElementById('legend');
-<<<<<<< HEAD
     
     if (!currentMetric || !layerVisibility[currentMetric]) {
         el.innerHTML = '';
@@ -1446,22 +876,6 @@ function getUniversalPopup(f, level) {
     const pop = p['Численность населения']||0;
     return `${header}<div class="popup-body"><div class="popup-row"><span class="popup-label">Розница:</span><span class="popup-value">${formatNum(ret)}</span></div><div class="popup-row"><span class="popup-label">Опт:</span><span class="popup-value">${formatNum(whole)}</span></div><div class="popup-row"><span class="popup-label">Население:</span><span class="popup-value">${formatNum(pop)}</span></div>${footer}</div>`;
 }
-=======
-    if (currentMetric === 'balance') {
-        el.innerHTML = '<div class="legend-title">Баланс</div><div>Кликните на область для просмотра потоков.</div>';
-        return;
-    }
-    const data = legendData[currentMetric];
-    if (!data) { el.innerHTML = ''; return; }
-    
-    let html = `<div class="legend-title">${metricsConfig[currentMetric].title}</div>`;
-    data.labels.forEach((lbl, i) => {
-        html += `<div class="legend-item"><div class="legend-color" style="background:${data.colors[i]}"></div>${lbl}</div>`;
-    });
-    el.innerHTML = html;
-}
-
->>>>>>> fe9222a7d9f6522bf79d81c046bd62325a8938c0
 </script>
 </body>
 </html>
