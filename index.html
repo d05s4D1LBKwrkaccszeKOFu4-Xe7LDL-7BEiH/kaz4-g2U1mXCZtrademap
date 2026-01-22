@@ -444,20 +444,7 @@ Promise.all([
 ]).then(([oblG, bordG, distG, okrG, twnG, storeG, fairG, kazG, distBorderG, popD, criD, vvpD, potrebD]) => {
     db.pop = popD; db.crime = criD; db.vvp = vvpD; db.potreb = potrebD;
 
-    // ГРАНИЦА КЗ (ТОНКАЯ, СВЕРХУ)
-    kazBorderLayer = L.geoJSON(kazG, {
-        style: { color: '#000', weight: 1.0, fill: false, opacity: 1 },
-        interactive: false,
-        pane: 'overlayPane'
-    }).addTo(map);
-
-    // ГРАНИЦЫ РАЙОНОВ (ЛИНЕЙНЫЙ СЛОЙ, ДЛЯ УРОВНЯ "РАЙОН")
-    districtsBorderLayer = L.geoJSON(distBorderG, {
-        style: { color: '#333', weight: 1.5, dashArray:'8, 2', fill: false, opacity: 0.8 },
-        interactive: false,
-        pane: 'overlayPane'
-    });
-
+    // СЛОИ
     oblastLayer = L.geoJSON(oblG, {
         style: (f) => getUniversalStyle(f, 'oblast'),
         onEachFeature: (f,l) => {
