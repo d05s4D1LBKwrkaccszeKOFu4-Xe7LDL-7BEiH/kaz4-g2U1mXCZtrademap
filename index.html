@@ -13,7 +13,7 @@
     html,body{margin:0;padding:0;height:100%;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;overflow:hidden; font-size: 13px;}
     #map{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;background:#f8fbff}
     
-    /* УПРАВЛЕНИЕ УРОВНЯМИ */
+    /* ПЕРЕКЛЮЧАТЕЛЬ УРОВНЕЙ */
     .admin-switch-container { 
         position: absolute; top: 15px; left: 50%; transform: translateX(-50%); 
         z-index: 1000; background: white; padding: 6px 15px; 
@@ -25,7 +25,6 @@
         color: #555; font-size: 12px; font-weight: 700; 
         padding: 6px 12px; border-radius: 20px; 
         transition: all 0.2s; text-transform: uppercase; 
-        letter-spacing: 0.5px;
     }
     .level-btn:hover { background: #f0f0f0; color: #333; }
     .level-btn.active { background: #1976D2; color: white; box-shadow: 0 2px 6px rgba(25, 118, 210, 0.4); }
@@ -37,18 +36,24 @@
     
     .accordion-item { border-bottom: 1px solid #eee; }
     .accordion-header { width: 100%; padding: 12px 15px; background: white; border: none; text-align: left; cursor: pointer; font-size: 12px; font-weight: 600; color: #444; display: flex; align-items: center; gap: 10px; transition: background 0.2s; }
-    .accordion-header i { width: 20px; text-align: center; color: #1976D2; }
     .accordion-header:hover { background: #f7f9fc; color: #1976D2; }
     .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #fcfdff; }
     .accordion-item.active .accordion-content { max-height: 100vh; overflow-y: auto; }
 
-    /* ЭЛЕМЕНТЫ УПРАВЛЕНИЯ СЛОЕМ */
+    /* КНОПКИ СЛОЕВ */
     .layer-control-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; border-bottom: 1px solid #f0f0f0; }
-    .layer-control-left { display: flex; align-items: center; gap: 8px; flex-grow: 1; }
-    .layer-name-btn { border: none; background: none; text-align: left; cursor: pointer; font-size: 11.5px; color: #555; padding: 0; flex-grow: 1; }
-    .layer-name-btn.active { color: #1976D2; font-weight: 700; }
-    input[type="checkbox"] { cursor: pointer; accent-color: #1976D2; }
+    .layer-btn { 
+        border: 1px solid #eee; background: white; text-align: left; cursor: pointer; 
+        font-size: 11.5px; color: #555; padding: 6px 10px; flex-grow: 1; border-radius: 4px;
+        transition: all 0.2s; margin-right: 10px;
+    }
+    .layer-btn:hover { background: #f5f5f5; }
+    .layer-btn.active { background: #e3f2fd; color: #1976D2; border-color: #1976D2; font-weight: 700; }
+    
     input[type="range"] { width: 60px; height: 4px; cursor: pointer; }
+    /* Стиль для переключателей без слайдеров (ярмарки и т.д.) */
+    .toggle-row { display: flex; align-items: center; gap: 8px; padding: 8px 15px; cursor: pointer;}
+    .toggle-row input { cursor: pointer; }
 
     /* ПРАВАЯ ПАНЕЛЬ */
     #stats-panel { 
@@ -103,9 +108,7 @@
     .bal-prod { font-weight: 700; color: #000; display: block; margin-bottom: 2px; }
     .bal-region { color: #444; display: block; margin-bottom: 1px; }
     .bal-markup { font-weight: 600; display: block; margin-top: 2px; }
-    
     .markup-green { color: #2e7d32; } .markup-red { color: #c62828; } .markup-yellow { color: #f9a825; }
-
     @media (max-width: 420px) { .balance-grid { grid-template-columns: 1fr; } }
 
     #mapTransitionLoader { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9); display:none;align-items:center;justify-content:center;z-index:9999;flex-direction:column; }
@@ -132,11 +135,8 @@
         <button class="accordion-header" onclick="toggleAccordion(this)"><i class="fa-solid fa-circle-info"></i> 1. Общие сведения</button>
         <div class="accordion-content">
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'population')">
-                    <button class="layer-name-btn" data-metric="population" onclick="toggleCheckbox('population')">Численность населения</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'population')" title="Прозрачность">
+                <button class="layer-btn active" data-metric="population" onclick="setLayer('population', this)">Численность населения</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'population')">
             </div>
         </div>
     </div>
@@ -145,11 +145,8 @@
         <button class="accordion-header" onclick="toggleAccordion(this)"><i class="fa-solid fa-shield-halved"></i> 2. Безопасность и правопорядок</button>
         <div class="accordion-content">
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'crime')">
-                    <button class="layer-name-btn" data-metric="crime" onclick="toggleCheckbox('crime')">Уровень преступности</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'crime')" title="Прозрачность">
+                <button class="layer-btn" data-metric="crime" onclick="setLayer('crime', this)">Уровень преступности</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'crime')">
             </div>
         </div>
     </div>
@@ -158,35 +155,23 @@
         <button class="accordion-header" onclick="toggleAccordion(this)"><i class="fa-solid fa-coins"></i> 3. Экономика и торговля</button>
         <div class="accordion-content">
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'vvp')">
-                    <button class="layer-name-btn" data-metric="vvp" onclick="toggleCheckbox('vvp')">ВРП на душу</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'vvp')" title="Прозрачность">
+                <button class="layer-btn" data-metric="vvp" onclick="setLayer('vvp', this)">ВРП на душу</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'vvp')">
             </div>
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'retail')">
-                    <button class="layer-name-btn" data-metric="retail" onclick="toggleCheckbox('retail')">Розничная торговля</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'retail')" title="Прозрачность">
+                <button class="layer-btn" data-metric="retail" onclick="setLayer('retail', this)">Розничная торговля</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'retail')">
             </div>
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'wholesale')">
-                    <button class="layer-name-btn" data-metric="wholesale" onclick="toggleCheckbox('wholesale')">Оптовая торговля</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'wholesale')" title="Прозрачность">
+                <button class="layer-btn" data-metric="wholesale" onclick="setLayer('wholesale', this)">Оптовая торговля</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'wholesale')">
             </div>
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'balance')">
-                    <button class="layer-name-btn" data-metric="balance" onclick="toggleCheckbox('balance')">Продовольственный баланс</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'balance')" title="Прозрачность">
+                <button class="layer-btn" data-metric="balance" onclick="setLayer('balance', this)">Продовольственный баланс</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'balance')">
             </div>
-            <div class="layer-control-row"><div class="layer-control-left"><input type="checkbox" id="fairsToggle"> <span>Ярмарки</span></div></div>
-            <div class="layer-control-row"><div class="layer-control-left"><input type="checkbox" id="storageToggle"> <span>Овощехранилища</span></div></div>
+            <label class="toggle-row"><input type="checkbox" id="fairsToggle"> <span>Ярмарки</span></label>
+            <label class="toggle-row"><input type="checkbox" id="storageToggle"> <span>Овощехранилища</span></label>
         </div>
     </div>
 
@@ -194,11 +179,8 @@
         <button class="accordion-header" onclick="toggleAccordion(this)"><i class="fa-solid fa-city"></i> 4. Строительство и инфраструктура</button>
         <div class="accordion-content">
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'queue')">
-                    <button class="layer-name-btn" data-metric="queue" onclick="toggleCheckbox('queue')">Очередники МИО</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'queue')" title="Прозрачность">
+                <button class="layer-btn" data-metric="queue" onclick="setLayer('queue', this)">Очередники МИО</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'queue')">
             </div>
         </div>
     </div>
@@ -212,11 +194,8 @@
         <button class="accordion-header" onclick="toggleAccordion(this)"><i class="fa-solid fa-hand-holding-heart"></i> 6. Социальное развитие</button>
         <div class="accordion-content">
             <div class="layer-control-row">
-                <div class="layer-control-left">
-                    <input type="checkbox" onchange="toggleLayerVisibility(this, 'susn')">
-                    <button class="layer-name-btn" data-metric="susn" onclick="toggleCheckbox('susn')">СУСН (Социально уязвимые)</button>
-                </div>
-                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'susn')" title="Прозрачность">
+                <button class="layer-btn" data-metric="susn" onclick="setLayer('susn', this)">СУСН (Социально уязвимые)</button>
+                <input type="range" min="0" max="1" step="0.1" value="0.3" oninput="changeLayerOpacity(this.value, 'susn')">
             </div>
         </div>
     </div>
@@ -314,15 +293,14 @@ function formatNum(n) {
 }
 
 let currentZoomMode = 'republic'; 
-// По умолчанию currentMetric пустая, чтобы карта была "выключена"
-let currentMetric = null; 
+// По умолчанию метрика есть (Население)
+let currentMetric = 'population'; 
 let currentRegion = "РЕСПУБЛИКА КАЗАХСТАН";
 let chartMode = "pop"; 
 let myChart = null;
 let lastHighlighted = null;
 const db = { pop: [], crime: [], vvp: [], potreb: [] };
 
-// Инициализация
 document.addEventListener('DOMContentLoaded', function() {
     manualSwitchLevel('republic');
 });
@@ -339,9 +317,8 @@ const metricsConfig = {
 };
 
 let map, oblastLayer, bordersLayer, districtsLayer, townsLayer, okrugaLayer, storagesLayer, fairsLayer, kazBorderLayer, districtsBorderLayer;
-let layerOpacities = { population: 0.7, crime: 0.7, vvp: 0.7, retail: 0.7, wholesale: 0.7, balance: 0.7, queue: 0.7, susn: 0.7 };
-// ВСЕ ВЫКЛЮЧЕНО ПО УМОЛЧАНИЮ
-let layerVisibility = { population: false, crime: false, vvp: false, retail: false, wholesale: false, balance: false, queue: false, susn: false };
+// Прозрачность слоев
+let layerOpacities = { population: 0.3, crime: 0.3, vvp: 0.3, retail: 0.3, wholesale: 0.3, balance: 0.3, queue: 0.3, susn: 0.3 };
 
 function getColor(val, metric) {
     if(metric === 'balance') return '#e0e0e0';
@@ -352,12 +329,9 @@ function getColor(val, metric) {
 }
 
 function getUniversalStyle(f, level) {
-    // Если метрика не выбрана или чекбокс выключен -> показываем только границы (прозрачная заливка)
-    if (!currentMetric || !layerVisibility[currentMetric]) {
-        return { fillColor: '#fff', fillOpacity: 0, color: '#444', weight: (level==='okrug'?0.5:1), opacity: 0.5 };
-    }
-
     let val = 0;
+    
+    // Получение значения
     if (currentMetric === 'vvp') {
         val = f.properties['vrp'] || f.properties['vvp_val'] || f.properties['vrp_per_capita'] || f.properties['ВРП'] || 0;
     } else if (currentMetric === 'susn') {
@@ -367,22 +341,20 @@ function getUniversalStyle(f, level) {
         if (field && f.properties[field] !== undefined) val = f.properties[field];
     }
 
+    // Определение цвета
     let fillColor = '#eee';
     if (currentMetric === 'balance' && (level === 'oblast' || level === 'republic')) fillColor = '#e0e0e0';
     else if (val > 0) fillColor = getColor(val, currentMetric);
     
-    // ПРОЗРАЧНОСТЬ
-    // slider 0 => opacity 1 (solid)
-    // slider 1 => opacity 0 (invisible)
+    // Прозрачность (0 слева = 0% прозр = видно)
     let opacityVal = 1 - (layerOpacities[currentMetric] || 0);
-    // Защита от полного исчезновения, если нужно, или оставить как есть
-    if (opacityVal < 0) opacityVal = 0;
-    if (opacityVal > 1) opacityVal = 1;
+    if(opacityVal < 0) opacityVal = 0;
+    if(opacityVal > 1) opacityVal = 1;
     
     let w = 1, col = '#444';
     if (level === 'np') { w=1; col='#333'; }
-    if (level === 'okrug') { w=0.6; col='#666'; }
-    if (level === 'rayon') { w=0.8; col='#666'; }
+    if (level === 'okrug') { w=0.8; col='#666'; }
+    if (level === 'rayon') { w=1; col='#333'; } 
     if (level === 'oblast' || level === 'republic') { w=1; col='white'; }
 
     return { fillColor: fillColor, color: col, weight: w, fillOpacity: opacityVal, opacity: 1 };
@@ -436,15 +408,27 @@ Promise.all([
     safeFetch('storages.geojson', {type:'FeatureCollection',features:[]}),
     safeFetch('fairs.geojson', {type:'FeatureCollection',features:[]}),
     safeFetch('kazborder.geojson', {type:'FeatureCollection',features:[]}),
-    safeFetch('districtsborder.geojson', {type:'FeatureCollection',features:[]}), // ГРАНИЦЫ РАЙОНОВ
+    safeFetch('districtsborder.geojson', {type:'FeatureCollection',features:[]}),
+    safeFetch('oblasts.geojson', {type:'FeatureCollection',features:[]}), 
     safeFetch('703831.json', []), 
     safeFetch('704767-kolichestvo-prestupleniy.json', []),
     safeFetch('2709379-vvp-metodom-proizvodstva.json', []), 
     safeFetch('potreb-rashody.json', [])
-]).then(([oblG, bordG, distG, okrG, twnG, storeG, fairG, kazG, distBorderG, popD, criD, vvpD, potrebD]) => {
+]).then(([balG, bordG, distG, okrG, twnG, storeG, fairG, kazG, distBorderG, oblG, popD, criD, vvpD, potrebD]) => {
     db.pop = popD; db.crime = criD; db.vvp = vvpD; db.potreb = potrebD;
 
-    // СЛОИ
+    kazBorderLayer = L.geoJSON(kazG, {
+        style: { color: '#000', weight: 1.0, fill: false, opacity: 1 },
+        interactive: false,
+        pane: 'overlayPane'
+    }).addTo(map);
+
+    districtsBorderLayer = L.geoJSON(distBorderG, {
+        style: { color: '#333', weight: 1.2, fill: false, opacity: 0.8 },
+        interactive: false,
+        pane: 'overlayPane'
+    });
+
     oblastLayer = L.geoJSON(oblG, {
         style: (f) => getUniversalStyle(f, 'oblast'),
         onEachFeature: (f,l) => {
@@ -478,7 +462,6 @@ Promise.all([
         } 
     });
     
-    // ИКОНКИ ГОРОДОВ
     townsLayer = L.geoJSON(twnG, { 
         pointToLayer: (f, latlng) => {
             let pop = f.properties.popul || 1000;
@@ -520,7 +503,9 @@ Promise.all([
         onEachFeature:(f,l)=>l.bindPopup(`<div class="popup-header" style="background:green">${escapeHtml(f.properties['Название']||'Ярмарка')}</div>`) 
     });
 
-    updateMapState(); updateChart(); updateLegend();
+    // Инициализация (сразу показываем области)
+    manualSwitchLevel('republic'); 
+    updateLegend();
 
     document.getElementById('storageToggle').addEventListener('change', e => e.target.checked ? map.addLayer(storagesLayer) : map.removeLayer(storagesLayer));
     document.getElementById('fairsToggle').addEventListener('change', e => e.target.checked ? map.addLayer(fairsLayer) : map.removeLayer(fairsLayer));
@@ -538,7 +523,6 @@ Promise.all([
 // --- ЛОГИКА ---
 function highlightFeature(e) {
     const layer = e.target;
-    // Если это маркер (город/склад), у него нет setStyle, пропускаем подсветку
     if (!layer.setStyle) return;
 
     if (lastHighlighted && lastHighlighted.setStyle) {
@@ -552,7 +536,7 @@ function highlightFeature(e) {
         lastHighlighted.setStyle(style);
     }
     
-    // ВАЖНОЕ ИСПРАВЛЕНИЕ: ТОЛЬКО ОБВОДКА, БЕЗ ЗАЛИВКИ
+    // ВЫДЕЛЕНИЕ: ТЕМНО-БИРЮЗОВАЯ ОБВОДКА, ЗАЛИВКА 0
     layer.setStyle({ color: '#008b8b', weight: 3, fillOpacity: 0 });
     layer.bringToFront();
     
@@ -576,62 +560,16 @@ function toggleDashboard() {
     if(myChart) setTimeout(()=>myChart.resize(), 300);
 }
 
-// Упрощенная функция для клика по названию (тот же функционал, что и чекбокс)
-function toggleCheckbox(metric) {
-    const chk = document.querySelector(`input[type="checkbox"][onchange*="${metric}"]`);
-    if (chk) {
-        chk.checked = !chk.checked;
-        toggleLayerVisibility(chk, metric);
-    }
-}
-
-// Мы не используем старый setLayer напрямую, теперь все через toggle
 function setLayer(metric, btn) {
-    // Эта функция осталась для совместимости, но лучше использовать toggleLayerVisibility
-    // Принудительно включаем чекбокс
-    const chk = btn.previousElementSibling;
-    if (chk) {
-        chk.checked = true;
-        toggleLayerVisibility(chk, metric);
-    }
-}
-
-function toggleLayerVisibility(checkbox, metric) {
-    layerVisibility[metric] = checkbox.checked;
-    
-    // Если мы включили слой - делаем его активным для раскраски
-    if (checkbox.checked) {
-        currentMetric = metric;
-        // Подсвечиваем текст
-        document.querySelectorAll('.layer-name-btn').forEach(b => b.classList.remove('active'));
-        const btn = checkbox.nextElementSibling;
-        if(btn) btn.classList.add('active');
-    } else {
-        // Если выключили текущий активный слой
-        if (currentMetric === metric) {
-            // Ищем, есть ли другие включенные слои
-            const otherActive = Object.keys(layerVisibility).reverse().find(k => layerVisibility[k]);
-            if (otherActive) {
-                currentMetric = otherActive; // Переключаемся на другой включенный
-                // Обновляем UI текста
-                document.querySelectorAll('.layer-name-btn').forEach(b => b.classList.remove('active'));
-                const btn = document.querySelector(`.layer-name-btn[data-metric="${otherActive}"]`);
-                if(btn) btn.classList.add('active');
-            } else {
-                currentMetric = null; // Все выключено
-                document.querySelectorAll('.layer-name-btn').forEach(b => b.classList.remove('active'));
-            }
-        }
-    }
-    
+    currentMetric = metric;
+    document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
     redrawLayers();
     updateLegend();
 }
 
 function changeLayerOpacity(val, metric) {
     layerOpacities[metric] = parseFloat(val);
-    // Перерисовываем карту, даже если метрика не активна (на случай если мы переключимся на нее)
-    // Но главное - если это ТЕКУЩАЯ метрика, карта обновится сразу
     redrawLayers(); 
 }
 
@@ -660,13 +598,11 @@ function manualSwitchLevel(mode) {
 function updateMapState() {
     [oblastLayer, districtsLayer, okrugaLayer, townsLayer].forEach(l => { if(l && map.hasLayer(l)) map.removeLayer(l); });
     
-    // Включаем нужный слой в зависимости от режима (Zoom In логика)
     if (currentZoomMode === 'republic' && oblastLayer) map.addLayer(oblastLayer);
     else if (currentZoomMode === 'oblast' && districtsLayer) map.addLayer(districtsLayer);
     else if (currentZoomMode === 'district' && okrugaLayer) map.addLayer(okrugaLayer);
     else if (currentZoomMode === 'town' && townsLayer) map.addLayer(townsLayer);
     
-    // Управление доп. слоями
     if (districtsBorderLayer) {
         if (currentZoomMode === 'district') {
             map.addLayer(districtsBorderLayer);
@@ -683,11 +619,6 @@ function updateMapState() {
 function updateLegend() {
     const el = document.getElementById('legend');
     
-    if (!currentMetric || !layerVisibility[currentMetric]) {
-        el.innerHTML = '';
-        return;
-    }
-
     if(currentMetric === 'balance') { el.innerHTML='<b>Баланс</b><br>Кликните на регион'; return; }
     const c = metricsConfig[currentMetric];
     if(!c || !c.colors) { el.innerHTML=''; return; }
@@ -784,14 +715,11 @@ function getUniversalPopup(f, level) {
     const name = getEntityName(f, level);
     
     let subtitle = '';
-    // Исправление ошибки 2: используем новые имена уровней
     if (level === 'rayon') subtitle = toTitleCase(p.ADM1_EN || p.ADM_1_RUS || '');
     if (level === 'okrug') subtitle = toTitleCase(p.ADM_2_rus || p.RAION || '');
     const header = `<div class="popup-header">${escapeHtml(name)}${subtitle ? `<span class="popup-sub">${escapeHtml(subtitle)}</span>` : ''}</div>`;
 
     let footer = '';
-    // Исправление ошибки 2: level === 'np' для городов
-    // Улучшенная проверка на Костанай (вхождение подстроки)
     if (level === 'np' && name.toUpperCase().includes('КОСТАНАЙ')) {
         footer = `<a href="https://d05s4D1LBKwrkaccszeKOFu4-Xe7LDL-7BEiH.github.io/kostY5_JYrviDpanay/" target="_blank" class="popup-btn-link">Перейти к карте Костаная</a>`;
     }
@@ -804,8 +732,10 @@ function getUniversalPopup(f, level) {
         const rightProducts = products.slice(half);
 
         function generateProductHtml(prodKey) {
+            // Проверка на наличие поля
             const val = p[prodKey];
-            if (!val || val.trim() === '') return '';
+            if (!val || typeof val !== 'string') return ''; // Если поля нет - пропускаем
+
             const match = val.match(/^(.*?)\s*\((\d+(?:[.,]\d+)?)\)$/);
             let region = val;
             let percentStr = '';
@@ -822,7 +752,12 @@ function getUniversalPopup(f, level) {
             }
             return `<div class="balance-flow-item"><span class="bal-prod">${escapeHtml(prodKey)}:</span><span class="bal-region">${escapeHtml(region)}</span>${percentStr ? `<span class="bal-markup ${colorClass}">${percentStr}</span>` : ''}</div>`;
         }
-        return `${header}<div class="popup-body"><div class="balance-grid"><div class="balance-col">${leftProducts.map(generateProductHtml).join('')}</div><div class="balance-col">${rightProducts.map(generateProductHtml).join('')}</div></div>${footer}</div>`;
+        
+        let content = `<div class="balance-grid"><div class="balance-col">${leftProducts.map(generateProductHtml).join('')}</div><div class="balance-col">${rightProducts.map(generateProductHtml).join('')}</div></div>`;
+        // Если ничего не сгенерировалось (например, нет полей товаров)
+        if (content.indexOf('balance-flow-item') === -1) content = '<div style="padding:10px;text-align:center">Нет данных по балансу</div>';
+
+        return `${header}<div class="popup-body">${content}</div>${footer}`;
     }
 
     // 2. СУСН
