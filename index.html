@@ -112,6 +112,70 @@
     @media (max-width: 420px) { .balance-grid { grid-template-columns: 1fr; } }
 
     #mapTransitionLoader { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9); display:none;align-items:center;justify-content:center;z-index:9999;flex-direction:column; }
+
+/* СТИЛИ ДЛЯ РАСКРЫВАЮЩЕГОСЯ СПИСКА НОРМ */
+    details.norms-details {
+        margin-top: 10px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        background: #fafafa;
+    }
+    
+    summary.norms-summary {
+        padding: 8px 10px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        color: #1976D2;
+        outline: none;
+        list-style: none; /* Убираем стандартный треугольник в некоторых браузерах */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    /* Кастомная стрелочка */
+    summary.norms-summary::after {
+        content: '\25BC'; /* Стрелка вниз */
+        font-size: 10px;
+        transition: transform 0.2s;
+    }
+    
+    details[open] summary.norms-summary::after {
+        transform: rotate(180deg);
+    }
+
+    /* Содержимое списка */
+    .norms-list {
+        max-height: 200px;
+        overflow-y: auto;
+        border-top: 1px solid #eee;
+        background: #fff;
+    }
+
+    .norm-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 10px;
+        border-bottom: 1px solid #f9f9f9;
+        font-size: 11.5px;
+    }
+    
+    .norm-row:last-child {
+        border-bottom: none;
+    }
+
+    .norm-name {
+        color: #555;
+        flex-grow: 1;
+        padding-right: 10px;
+    }
+
+    .norm-val {
+        font-weight: 700;
+        color: #333;
+        white-space: nowrap;
+    }
 </style>
 </head>
 <body>
@@ -710,6 +774,7 @@ function updateChart() {
 }
 
 // --- УНИВЕРСАЛЬНЫЙ ПОПАП ---
+// --- УНИВЕРСАЛЬНЫЙ ПОПАП ---
 function getUniversalPopup(f, level) {
     const p = f.properties;
     const name = getEntityName(f, level);
@@ -720,22 +785,22 @@ function getUniversalPopup(f, level) {
     const header = `<div class="popup-header">${escapeHtml(name)}${subtitle ? `<span class="popup-sub">${escapeHtml(subtitle)}</span>` : ''}</div>`;
 
     let footer = '';
+    // Кнопка для Костаная
     if (level === 'np' && name.toUpperCase().includes('КОСТАНАЙ')) {
         footer = `<a href="https://d05s4D1LBKwrkaccszeKOFu4-Xe7LDL-7BEiH.github.io/kostY5_JYrviDpanay/" target="_blank" class="popup-btn-link">Перейти к карте Костаная</a>`;
     }
     
-    // 1. БАЛАНС
+    // 1. ПРОДОВОЛЬСТВЕННЫЙ БАЛАНС
     if (currentMetric === 'balance') {
+        // --- БЛОК 1: ПОТОКИ (GRID) ---
         const products = ["Лук репчатый", "Картофель", "Морковь", "Капуста белокочанная", "Сахар-песок", "Масло подсолнечное", "Масло сливочное несоленое", "Молоко пастеризованное", "Творог 5-9% жирности", "Говядина с костями", "Рожки", "Мука пшеничная первого сорта", "Рис шлифованный, полированный", "Яйца, 1 категории", "Соль, кроме экстра"];
         const half = Math.ceil(products.length / 2);
         const leftProducts = products.slice(0, half);
         const rightProducts = products.slice(half);
 
         function generateProductHtml(prodKey) {
-            // Проверка на наличие поля
             const val = p[prodKey];
-            if (!val || typeof val !== 'string') return ''; // Если поля нет - пропускаем
-
+            if (!val || val.trim() === '') return '';
             const match = val.match(/^(.*?)\s*\((\d+(?:[.,]\d+)?)\)$/);
             let region = val;
             let percentStr = '';
@@ -753,11 +818,76 @@ function getUniversalPopup(f, level) {
             return `<div class="balance-flow-item"><span class="bal-prod">${escapeHtml(prodKey)}:</span><span class="bal-region">${escapeHtml(region)}</span>${percentStr ? `<span class="bal-markup ${colorClass}">${percentStr}</span>` : ''}</div>`;
         }
         
-        let content = `<div class="balance-grid"><div class="balance-col">${leftProducts.map(generateProductHtml).join('')}</div><div class="balance-col">${rightProducts.map(generateProductHtml).join('')}</div></div>`;
-        // Если ничего не сгенерировалось (например, нет полей товаров)
-        if (content.indexOf('balance-flow-item') === -1) content = '<div style="padding:10px;text-align:center">Нет данных по балансу</div>';
+        const gridContent = `<div class="balance-grid"><div class="balance-col">${leftProducts.map(generateProductHtml).join('')}</div><div class="balance-col">${rightProducts.map(generateProductHtml).join('')}</div></div>`;
 
-        return `${header}<div class="popup-body">${content}</div>${footer}`;
+        // --- БЛОК 2: НОРМЫ ПРОД ОБЕСПЕЧЕНИЯ (РАСКРЫВАЮЩИЙСЯ СПИСОК) ---
+        // Список полей из вашего geojson
+        const normKeys = [
+            "Мука пшеничная высшего сорта и 1 сорта",
+            "Хлеб ржаной",
+            "Хлеб ржано-пшеничный",
+            "Хлеб пшеничный (хлеб и сдобные булочки из муки пшеничной высшего сорта и 1 сорта)",
+            "Макаронные изделия",
+            "Крупа гречневая",
+            "Крупа рисовая",
+            "Крупа манная",
+            "Крупа овсяная",
+            "Крупа пшенная",
+            "Картофель",
+            "Морковь",
+            "Лук репчатый",
+            "Томаты",
+            "Огурцы",
+            "Свекла",
+            "Яблоки",
+            "Говядина",
+            "Баранина",
+            "Мясо птицы",
+            "Молоко коровье",
+            "Яйца куриные, штук/год",
+            "Масло подсолнечное",
+            "Сахар",
+            "Соль пищевая йодированная"
+        ];
+
+        let normsRows = '';
+        normKeys.forEach(key => {
+            let val = p[key];
+            if (val !== undefined && val !== null) {
+                // Округляем до 1 знака
+                let numVal = parseFloat(val);
+                let displayVal = isNaN(numVal) ? val : numVal.toFixed(1);
+                
+                // Добавляем единицу измерения (для яиц штук, для остального тонн)
+                let unit = key.includes('штук') ? ' шт.' : ' т';
+                
+                // Укорачиваем длинные названия для красоты
+                let displayName = key;
+                if (key.startsWith("Хлеб пшеничный")) displayName = "Хлеб пшеничный (в.с. и 1 с.)";
+                if (key.startsWith("Мука пшеничная")) displayName = "Мука пшеничная (в.с. и 1 с.)";
+
+                normsRows += `
+                    <div class="norm-row">
+                        <span class="norm-name">${displayName}</span>
+                        <span class="norm-val">${displayVal}${unit}</span>
+                    </div>
+                `;
+            }
+        });
+
+        let normsBlock = '';
+        if (normsRows) {
+            normsBlock = `
+                <details class="norms-details">
+                    <summary class="norms-summary">Норма прод. обеспечения</summary>
+                    <div class="norms-list">
+                        ${normsRows}
+                    </div>
+                </details>
+            `;
+        }
+
+        return `${header}<div class="popup-body">${gridContent}${normsBlock}</div>${footer}`;
     }
 
     // 2. СУСН
@@ -777,7 +907,7 @@ function getUniversalPopup(f, level) {
         return `${header}<div class="popup-body"><div class="popup-row"><span class="popup-label">Население:</span><span class="popup-value">${formatNum(pop)}</span></div><div class="popup-row"><span class="popup-label">Очередники:</span><span class="popup-value">${formatNum(d)}</span></div><div class="popup-row"><span class="popup-label">Получили жилье:</span><span class="popup-value">${formatNum(r)}</span></div>${footer}</div>`;
     }
 
-    // 4. ВРП ИЛИ НАСЕЛЕНИЕ (ОБЩАЯ ЛОГИКА ДЛЯ ПОПАПА)
+    // 4. ВРП ИЛИ НАСЕЛЕНИЕ
     if (currentMetric === 'vvp' || currentMetric === 'population') {
         let pop = getLatestPopulation(name);
         if (pop === 0) pop = p['Численность населения'] || 1;
